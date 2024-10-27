@@ -1,12 +1,23 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import dotenv from "dotenv";
+import connectToMongoDB from "./database/connect";
+
+dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello, Express with TypeScript!");
+// app.use(cors());
+
+connectToMongoDB().catch((error) => {
+  console.error("Failed to connect to MongoDB", error);
+  process.exit(1);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+app.get("/", (req, res) => {
+  res.send("Welcome to the API");
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
