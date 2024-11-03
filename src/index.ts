@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectToMongoDB from "./database/connect";
+import userRouter from './routes/userRoutes';
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ connectToMongoDB().catch((error) => {
 app.get("/", (req, res) => {
   res.send("Welcome to the API");
 });
+app.use(express.json());
+app.use('/api/user', userRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

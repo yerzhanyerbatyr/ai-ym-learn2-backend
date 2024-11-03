@@ -1,31 +1,31 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface ICompletedTask extends Document {
+export interface ICompletedTask extends Document {
   taskId: mongoose.Schema.Types.ObjectId;
   status: string; // e.g., 'complete', 'incomplete';
   videoUrl: string;
   completedAt: Date;
 }
 
-interface ICompletedLesson extends Document {
+export interface ICompletedLesson extends Document {
   lessonId: mongoose.Schema.Types.ObjectId;
   status: string; // e.g., 'complete', 'incomplete'
   completedAt: Date;
   completedTasks: ICompletedTask[];
 }
 
-interface IQuiz extends Document {
+export interface IQuiz extends Document {
     quizId: number;
     exercises: IExercise[];
     score: number;
 }
 
-interface IExercise extends Document {
+export interface IExercise extends Document {
     exerciseId: number;
     status: string;
 }
 
-interface IUser extends Document {
+export interface IUser extends Document {
   userId: string;
   totalXp: number;
   streakCount: number;
@@ -63,13 +63,15 @@ const completedLessonSchema = new Schema<ICompletedLesson>({
   completedTasks: [completedTaskSchema],
 });
 
+const futureDate = new Date('9999-12-31');
+
 const userSchema = new Schema<IUser>({
   userId: { type: String, required: true },
   totalXp: { type: Number, default: 0 },
   streakCount: { type: Number, default: 0 },
-  lastActiveDay: Date,
-  completedLessons: [completedLessonSchema],
-  takenQuizzes: [quizSchema],
+  lastActiveDay: { type: Date, default: futureDate },
+  completedLessons: { type: [completedLessonSchema], default: [] },
+  takenQuizzes: { type: [quizSchema], default: [] },
 });
 
 const User = mongoose.models.User || mongoose.model<IUser>("User", userSchema);
