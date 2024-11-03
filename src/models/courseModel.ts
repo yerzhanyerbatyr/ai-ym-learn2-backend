@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-interface IExercise extends Document {
+export interface IExercise extends Document {
   exerciseId: number;
   description: string;
   answerOptions: string[];
@@ -8,12 +8,12 @@ interface IExercise extends Document {
   xpValue: number;
 }
 
-interface IQuiz extends Document {
+export interface IQuiz extends Document {
   quizId: number;
   exercises: IExercise[];
 }
 
-interface ITask extends Document {
+export interface ITask extends Document {
   taskId: number;
   description: string;
   status: string;
@@ -22,13 +22,13 @@ interface ITask extends Document {
   duration: number;
 }
 
-interface ILesson extends Document {
+export interface ILesson extends Document {
   lessonId: number;
   title: string;
   tasks: ITask[];
 }
 
-interface ICourse extends Document {
+export interface ICourse extends Document {
   title: string;
   description: string;
   lessons: ILesson[];
@@ -60,14 +60,14 @@ const taskSchema = new Schema<ITask>({
 const lessonSchema = new Schema<ILesson>({
   lessonId: { type: Number, required: true },
   title: { type: String, required: true },
-  tasks: [taskSchema],
+  tasks: {type: [taskSchema],  default: []},
 });
 
 const courseSchema = new Schema<ICourse>({
   title: { type: String, required: true },
   description: { type: String },
-  lessons: [lessonSchema],
-  quiz: [quizSchema],
+  lessons: {type: [lessonSchema],  default: []},
+  quiz: {type: [quizSchema],  default: []},
 });
 
 const Course =

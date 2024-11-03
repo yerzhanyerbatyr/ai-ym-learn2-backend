@@ -1,7 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import connectToMongoDB from "./database/connect";
-import userRouter from './routes/userRoutes';
+import courseRouter from "./routes/courseRoutes";
+import lessonRouter from "./routes/lessonRoutes";
+import taskRouter from "./routes/taskRoutes";
+import userRouter from "./routes/userRoutes";
 
 dotenv.config();
 
@@ -18,8 +21,13 @@ connectToMongoDB().catch((error) => {
 app.get("/", (req, res) => {
   res.send("Welcome to the API");
 });
+
 app.use(express.json());
-app.use('/api/user', userRouter);
+app.use("/api/course", courseRouter);
+app.use("/api/course/:courseId/lesson", lessonRouter);
+app.use("api/course/:courseId/lesson/:lessonId/task", taskRouter);
+
+app.use("/api/user", userRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
