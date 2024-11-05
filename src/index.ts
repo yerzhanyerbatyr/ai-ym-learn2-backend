@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 app.use(express.json());
 app.use("/api/course", courseRouter);
 app.use("/api/course/:courseId/lesson", lessonRouter);
-app.use("api/course/:courseId/lesson/:lessonId/task", taskRouter);
+app.use("/api/course/:courseId/lesson/:lessonId/task", taskRouter);
 
 app.use("/api/user", userRouter);
 

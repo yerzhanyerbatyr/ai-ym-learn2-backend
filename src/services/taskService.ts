@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import Course from "../models/courseModel";
 import { ITask } from "../models/courseModel";
 
@@ -8,7 +9,7 @@ export const addTask = async (courseId: string, lessonId: string, taskData: ITas
   const lesson = course.lessons.id(lessonId);
   if (!lesson) throw new Error("Lesson not found");
 
-  lesson.tasks.push(taskData);
+  lesson.tasks.push({ ...taskData, taskId: new Types.ObjectId() });
   await course.save();
   return course;
 };

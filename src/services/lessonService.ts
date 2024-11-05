@@ -1,10 +1,10 @@
+import { Types } from "mongoose";
 import Course from "../models/courseModel";
 import { ILesson } from "../models/courseModel";
 
 export const addLesson = async (courseId: string, lessonData: ILesson) => {
   const course = await Course.findById(courseId);
-  if (!course) throw new Error("Course not found");
-
+  if (!course) throw new Error("Course not found");  
   course.lessons.push(lessonData);
   await course.save();
   return course;
@@ -24,7 +24,11 @@ export const getLessonById = async (courseId: string, lessonId: string) => {
   return course.lessons.id(lessonId);
 };
 
-export const updateLesson = async (courseId: string, lessonId: string, lessonData: Partial<ILesson>) => {
+export const updateLesson = async (
+  courseId: string,
+  lessonId: string,
+  lessonData: Partial<ILesson>
+) => {
   const course = await Course.findById(courseId);
   if (!course) throw new Error("Course not found");
 
