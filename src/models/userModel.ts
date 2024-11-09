@@ -1,17 +1,24 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface ICompletedTask extends Document {
-  taskId: mongoose.Schema.Types.ObjectId;
+  taskId: string;
   status: string; // e.g., 'complete', 'incomplete';
   videoUrl: string;
   completedAt: Date;
 }
 
 export interface ICompletedLesson extends Document {
-  lessonId: mongoose.Schema.Types.ObjectId;
+  lessonId: string;
   status: string; // e.g., 'complete', 'incomplete'
   completedAt: Date;
   completedTasks: ICompletedTask[];
+}
+
+export interface ICompletedCourse extends Document {
+  courseId: string;
+  status: string; // e.g., 'complete', 'incomplete'
+  completedAt: Date;
+  completedLessons: ICompletedLesson[];
 }
 
 export interface IQuiz extends Document {
@@ -30,7 +37,7 @@ export interface IUser extends Document {
   totalXp: number;
   streakCount: number;
   lastActiveDay: Date;
-  completedLessons: ICompletedLesson[];
+  completedCourses: ICompletedCourse[];
   takenQuizzes: IQuiz[];
 }
 
@@ -46,7 +53,7 @@ const quizSchema = new Schema<IQuiz>({
 });
 
 const completedTaskSchema = new Schema<ICompletedTask>({
-  taskId: { type: mongoose.Schema.Types.ObjectId, ref: "Task", required: true },
+  taskId: { type: String, ref: "Task", required: true },
   status: { type: String, default: "incomplete" },
   videoUrl: { type: String, required: false },
   completedAt: Date,
@@ -54,13 +61,24 @@ const completedTaskSchema = new Schema<ICompletedTask>({
 
 const completedLessonSchema = new Schema<ICompletedLesson>({
   lessonId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "Lesson",
     required: true,
   },
   status: { type: String, default: "incomplete" },
   completedAt: Date,
   completedTasks: [completedTaskSchema],
+});
+
+const completedCourseSchema = new Schema<ICompletedCourse>({
+  courseId: {
+    type: String,
+    ref: "Course",
+    required: true,
+  },
+  status: { type: String, default: "incomplete" },
+  completedAt: Date,
+  completedLessons: [completedLessonSchema],
 });
 
 const futureDate = new Date('9999-12-31');
@@ -70,7 +88,7 @@ const userSchema = new Schema<IUser>({
   totalXp: { type: Number, default: 0 },
   streakCount: { type: Number, default: 0 },
   lastActiveDay: { type: Date, default: futureDate },
-  completedLessons: { type: [completedLessonSchema], default: [] },
+  completedCourses: { type: [completedCourseSchema], default: [] },
   takenQuizzes: { type: [quizSchema], default: [] },
 });
 
