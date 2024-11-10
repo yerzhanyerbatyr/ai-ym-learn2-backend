@@ -8,5 +8,6 @@ router.get("/", CourseController.getCourses);
 router.get("/:id", CourseController.getCourseById);
 router.put("/:id", CourseController.updateCourse);
 router.delete("/:id", CourseController.deleteCourse);
+router.get("/:id/vocabulary", CourseController.getVocabularyList);
 
 export default router;

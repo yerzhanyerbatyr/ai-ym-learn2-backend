@@ -14,6 +14,7 @@ export interface IQuiz extends Document {
 
 export interface ITask extends Document {
   taskNumber: number;
+  word: string;
   description: string;
   status: string;
   videoUrl: string;
@@ -48,6 +49,7 @@ const quizSchema = new Schema<IQuiz>({
 
 const taskSchema = new Schema<ITask>({
   taskNumber: { type: Number, required: true },
+  word: { type: String, required: true },
   description: { type: String, required: true },
   status: { type: String, default: "incomplete" },
   videoUrl: { type: String, required: true },

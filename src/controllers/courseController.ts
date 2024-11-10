@@ -50,6 +50,15 @@ class courseController {
       res.status(500).json({ error: "Failed to delete course" });
     }
   }
+
+  async getVocabularyList(req: Request, res: Response) {
+    try {
+      const vocabularyList = await CourseService.getVocabularyList(req.params.id);
+      res.status(200).json(vocabularyList);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to retrieve vocabulary list" });
+    }
+  }
 }
 
 export default new courseController();

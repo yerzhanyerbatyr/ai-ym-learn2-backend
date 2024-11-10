@@ -5,6 +5,7 @@ import courseRouter from "./routes/courseRoutes";
 import lessonRouter from "./routes/lessonRoutes";
 import taskRouter from "./routes/taskRoutes";
 import userRouter from "./routes/userRoutes";
+import quizRouter from "./llm/llmRoutes";
 
 dotenv.config();
 
@@ -26,6 +27,8 @@ app.use(express.json());
 app.use("/api/course", courseRouter);
 app.use("/api/course/:courseId/lesson", lessonRouter);
 app.use("/api/course/:courseId/lesson/:lessonId/task", taskRouter);
+
+app.use("/api", quizRouter);
 
 app.use("/api/user", userRouter);
 
