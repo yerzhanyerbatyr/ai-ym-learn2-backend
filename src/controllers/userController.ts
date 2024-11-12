@@ -4,7 +4,7 @@ import * as userService from '../services/userService';
 export const createUser = async (req: Request, res: Response) => {
   try {
     const user = await userService.createUser(req.body);
-    res.status(201).json(user);
+    res.status(200).json({ message: 'User added successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Error creating user' });
   }
@@ -50,49 +50,50 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserCompletedCourses = async (req: Request, res: Response) => {
+export const getUserCourses = async (req: Request, res: Response) => {
   try {
-    const completedCourses = await userService.getUserCompletedCourses(req.params.userId);
-    res.status(200).json(completedCourses);
+    const userCourses = await userService.getUserCourses(req.params.userId);
+    res.status(200).json(userCourses);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching completed lessons' });
   }
 };
 
-export const getUserTakenQuizzes = async (req: Request, res: Response) => {
+export const getUserCompletedLessonIds = async (req: Request, res: Response) => {
   try {
-    const takenQuizzes = await userService.getUserTakenQuizzes(req.params.userId);
-    res.status(200).json(takenQuizzes);
+    const { userId } = req.params;
+    const completedLessonIds = await userService.getUserCompletedLessonIds(userId);
+    res.status(200).json(completedLessonIds);
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching quiz history' });
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getInProgressLessonId = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const lessonId = await userService.getInProgressLessonId(userId);
+    res.status(200).json({ lessonId });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getLessonTasks = async (req: Request, res: Response) => {
+  try {
+    const { userId, lessonId } = req.params;
+    const tasks = await userService.getLessonTasksById(userId, lessonId);
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
 export const startCourseController = async (req: Request, res: Response) => {
   try {
-      const { userId, courseId } = req.body;
-      const lessons = await userService.startCourse(userId, courseId);
-      res.status(200).json(lessons);
-  } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
-  }
-};
-
-export const startLessonController = async (req: Request, res: Response) => {
-  try {
-      const { userId, lessonId } = req.body;
-      const tasks = await userService.startLesson(userId, lessonId);
-      res.status(200).json(tasks);
-  } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
-  }
-};
-
-export const completeLessonController = async (req: Request, res: Response) => {
-  try {
-      const { userId, lessonId } = req.body;
-      await userService.completeLesson(userId, lessonId);
-      res.status(200).send();
+    const { userId, courseId } = req.body;
+    await userService.startCourse(userId, courseId);
+    res.status(200).json({ message: 'Course started successfully' });
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }
@@ -100,20 +101,49 @@ export const completeLessonController = async (req: Request, res: Response) => {
 
 export const startTaskController = async (req: Request, res: Response) => {
   try {
-      const { userId, lessonId, taskId } = req.body;
-      const task = await userService.startTask(userId, lessonId, taskId);
-      res.status(200).json(task);
+    const { userId, courseId, lessonId, taskId } = req.body;
+    await userService.startTask(userId, courseId, lessonId, taskId);
+    res.status(200).json({ message: 'Task started successfully' });
   } catch (error) {
-      res.status(500).json({ error: (error as Error).message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
 export const completeTaskController = async (req: Request, res: Response) => {
   try {
-      const { userId, lessonId, taskId } = req.body;
-      await userService.completeTask(userId, lessonId, taskId);
-      res.status(200).send();
+    const { userId, courseId, lessonId, taskId } = req.body;
+    await userService.completeTask(userId, courseId, lessonId, taskId);
+    res.status(200).json({ message: 'Task completed successfully' });
   } catch (error) {
-      res.status(500).json({ error: (error as Error).message });
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const completeLessonController = async (req: Request, res: Response) => {
+  try {
+    const { userId, courseId, lessonId } = req.body;
+    await userService.completeLesson(userId, courseId, lessonId);
+    res.status(200).json({ message: 'Lesson completed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const completeCourseController = async (req: Request, res: Response) => {
+  try {
+    const { userId, courseId } = req.body;
+    await userService.completeCourse(userId, courseId);
+    res.status(200).json({ message: 'Course completed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
+export const getUserQuizzes = async (req: Request, res: Response) => {
+  try {
+    const userQuizzes = await userService.getUserQuizzes(req.params.userId);
+    res.status(200).json(userQuizzes);
+  } catch (error) {
+    res.status(500).json({ error: 'Error fetching quiz history' });
   }
 };

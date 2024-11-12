@@ -1,6 +1,7 @@
-import User, { IUser, ICompletedLesson, ICompletedTask, ICompletedCourse } from '../models/userModel';
-import {getLessonById} from '../services/lessonService';
-import CourseService from '../services/courseService';
+import User, { IUser, ILesson, ITask, ICourse } from '../models/userModel';
+import CourseService from './courseService';
+import { getLessonById } from './lessonService';
+import { getTaskById } from './taskService';
 
 export const createUser = async (userData: IUser) => {
   const user = new User(userData);
@@ -19,139 +20,259 @@ export const deleteUser = async (userId: string) => {
   return await User.findOneAndDelete({ userId });
 };
 
-export const getUserCompletedCourses = async (userId: string) => {
-  const user = await User.findOne({ userId }).select('completedCourses');
-  return user?.completedCourses || [];
+export const getUserCourses = async (userId: string) => {
+  const user = await User.findOne({ userId }).select('userCourses');
+  return user?.userCourses || [];
 };
 
-export const getUserTakenQuizzes = async (userId: string) => {
-  const user = await User.findOne({ userId }).select('takenQuizzes');
-  return user?.takenQuizzes || [];
+export const getUserCompletedLessonIds = async (userId: string) => {
+  const user = await User.findOne({ userId }).select('userCourses');
+  if (!user) throw new Error('User not found');
+
+  // Extract only the `lessonId` of completed lessons
+  const completedLessonIds = user.userCourses.flatMap((course) =>
+    course.courseLessons.filter((lesson) => lesson.status === 'complete').map((lesson) => lesson.lessonId)
+  );
+
+  return completedLessonIds;
 };
 
-const ONE_DAY_MS = 24 * 60 * 60 * 1000;
-const updateStreak = async (user: any) => {
-  const today = new Date();
-  const lastActive = user.lastActiveDay ? new Date(user.lastActiveDay) : null;
+export const getInProgressLessonId = async (userId: string) => {
+  const user = await User.findOne({ userId }).select('userCourses');
+  if (!user) throw new Error('User not found');
 
-  today.setHours(0, 0, 0, 0);
-  if (lastActive) lastActive.setHours(0, 0, 0, 0);
+  // Find the course that is in progress
+  const inProgressCourse = user.userCourses.find((course) => course.status === 'in progress');
+  if (!inProgressCourse) throw new Error('No course in progress found');
 
-  if (lastActive && today.getTime() === lastActive.getTime()) {
-    // If dates are the same, skip updating the streak
-    return;
-  }
+  // Find the first in-progress lesson in this course
+  const inProgressLesson = inProgressCourse.courseLessons.find((lesson) => lesson.status === 'in progress');
+  if (!inProgressLesson) throw new Error('No in-progress lesson found');
 
-  if (lastActive) {
-    const dayDifference = Math.floor((today.getTime() - lastActive.getTime()) / ONE_DAY_MS);
-    if (dayDifference === 1) {
-      user.streakCount += 1;
-    } else if (dayDifference > 1) {
-      user.streakCount = 1; // reset streak if more than 1 day has passed
+  return inProgressLesson.lessonId;
+};
+
+
+export const getLessonTasksById = async (userId: string, lessonId: string) => {
+  const user = await User.findOne({ userId }).select('userCourses');
+  if (!user) throw new Error('User not found');
+
+  // Find the lesson by lessonId and return its tasks
+  for (const course of user.userCourses) {
+    const lesson = course.courseLessons.find((lesson) => lesson.lessonId === lessonId);
+    if (lesson) {
+      return lesson.lessonTasks;
     }
-  } else {
-    user.streakCount = 1; // initialize streak if none exists
   }
 
-  user.lastActiveDay = today;
-  return await user.save();
+  throw new Error('Lesson not found');
 };
 
 export const startCourse = async (userId: string, courseId: string) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
+  console.log("I got here")
+  // Check if the course already exists in userCourses
+  let course = user.userCourses.find((course: ICourse) => course.courseId.toString() === courseId);
+  console.log("I got the course")
+  console.log(course)
 
-  let course = user.completedCourses.find((course: ICompletedCourse) => course.courseId === courseId);
-  if (course){
-    return course.completedLessons;
+  if (course) {
+    // Check if there is already a lesson in progress
+
+    const inProgressLesson = course.courseLessons.find((lesson) => lesson.status === 'in progress');
+    if (inProgressLesson) {
+      // If a lesson is already in progress, do nothing
+      return;
+    }
+
+    // Find the next lesson after the last completed one
+    const nextLesson = course.courseLessons.find((lesson, index, lessons) =>
+      lesson.status === 'incomplete' &&
+      (index === 0 || lessons[index - 1].status === 'complete')
+    );
+
+    console.log(nextLesson)
+
+    if (!nextLesson) throw new Error('No more lessons to start in this course');
+
+    // Set the next lesson status to 'in progress'
+    nextLesson.status = 'in progress';
+    const lesson = await getLessonById(courseId, nextLesson.lessonId);
+    const fetchedTasks = lesson.tasks;
+    nextLesson.lessonTasks = fetchedTasks.map((task) => ({
+      taskId: task._id.toString(),
+      status: 'incomplete',
+      videoUrl: null,
+      completedAt: null,
+    }));
+    
   } else {
-      // Create a new lesson if it doesn't exist
-      const courseData = await CourseService.getCourseById(courseId);
-      if (!courseData) throw new Error('Course not found');
-      const completedLessons: ICompletedLesson[] = courseData.lessons.map((lesson) => ({
-        lessonId: lesson._id.toString(),
-        status: 'not started',
-        completedAt: null,
-        completedTasks: lesson.tasks.map((task) => ({
-          taskId: task._id.toString(),
-          status: 'not started',
-          videoUrl: task.videoUrl || '',
-          completedAt: null,
-        })),
-      }));
-      course = {
-        courseId,
-        status: 'in progress',
-        completedAt: null,
-        completedLessons,
-      };
-      user.completedCourses.push(course);
+    console.log("Here in the else")
+    // Initialize the course if it does not exist
+    const courseData = await CourseService.getCourseById(courseId);
+    console.log("Here is the courseData")
+    console.log(courseData)
+    if (!courseData) throw new Error('Course not found');
+
+    // Map all lessons with status 'not started'
+    const courseLessons: ILesson[] = courseData.lessons.map((lesson) => ({
+      lessonId: lesson._id.toString(),
+      status: 'incomplete',
+      completedAt: null,
+      lessonTasks: [],
+    }));
+
+    // Set the first lesson status to 'in progress' and fetch its tasks
+    courseLessons[0].status = 'in progress';
+    console.log(courseLessons[0]);
+    console.log(courseLessons[0].lessonId);
+    const lesson = await getLessonById(courseId, courseLessons[0].lessonId);
+    const fetchedTasks = lesson.tasks;
+    courseLessons[0].lessonTasks = fetchedTasks.map((task) => ({
+      taskId: task._id.toString(),
+      status: 'incomplete',
+      videoUrl: null,
+      completedAt: null,
+    }));
+
+    console.log(courseLessons[0].lessonTasks)
+    // Add the new course to userCourses
+    course = {
+      courseId,
+      status: 'in progress',
+      completedAt: null,
+      courseLessons,
+    };
+    console.log("Im pushing this:")
+    console.log(course.courseLessons[0].lessonTasks)
+    user.userCourses.push(course);
+    console.log("pushed")
   }
 
+  // Save the user with the updated course data
   await user.save();
-  return course.completedCourses;
 };
 
-export const startLesson = async (userId: string, lessonId: string) => {
+const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+const updateStreak = async (user: any) => {
+  console.log("started updating the streak")
+  const today = new Date();
+  const lastActive = user.lastActiveDay ? new Date(user.lastActiveDay) : null;
+
+  today.setHours(0, 0, 0, 0);
+  if (lastActive) lastActive.setHours(0, 0, 0, 0);
+  console.log(today)
+  console.log(lastActive)
+
+  if (lastActive && today.getTime() === lastActive.getTime()) {
+    console.log("the same day")
+    return;
+  }
+  console.log(lastActive)
+
+  if (lastActive) {
+    const dayDifference = Math.floor((today.getTime() - lastActive.getTime()) / ONE_DAY_MS);
+    console.log(dayDifference)
+    if (dayDifference === 1) {
+      user.streakCount += 1;
+    } else {
+      user.streakCount = 1;
+    }
+  } else {
+    user.streakCount = 1;
+  }
+
+  user.lastActiveDay = today;
+  await user.save();
+};
+
+export const startTask = async (userId: string, courseId: string, lessonId: string, taskId: string) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
 
-  let lesson = user.completedLessons.find((lesson: ICompletedLesson) => lesson.lessonId === lessonId);
-  if (!lesson) {
-      // Create a new lesson if it doesn't exist
-      lesson = { lessonId, status: 'in progress', completedAt: null, completedTasks: [] };
-      user.completedLessons.push(lesson);
-  }
+  const course = user.userCourses.find((course) => course.courseId === courseId);
+  if (!course) throw new Error('Course not found');
 
-  await user.save();
-  return lesson.completedTasks;
-};
-
-export const completeLesson = async (userId: string, lessonId: string) => {
-  const user = await User.findOne({ userId });
-  if (!user) throw new Error('User not found');
-
-  const lesson = user.completedLessons.find((lesson: ICompletedLesson) => lesson.lessonId === lessonId);
-  if (lesson) {
-      lesson.status = 'complete';
-      lesson.completedAt = new Date();
-      await user.save();
-  }
+  const lesson = course.courseLessons.find((lesson) => lesson.lessonId === lessonId);
   if (!lesson) throw new Error('Lesson not found');
-};
 
-export const startTask = async (userId: string, lessonId: string, taskId: string) => {
-  const user = await User.findOne({ userId });
-  if (!user) throw new Error('User not found');
+  const task = lesson.lessonTasks.find((task) => task.taskId === taskId);
+  if (!task) throw new Error('Task not found');
 
-  let lesson = user.completedLessons.find((lesson: ICompletedLesson) => lesson.lessonId === lessonId);
-  if (!lesson) {
-      lesson = { lessonId, status: 'in progress', completedAt: null, completedTasks: [] };
-      user.completedLessons.push(lesson);
+  if (task.status === 'complete') {
+    return;
   }
 
-  let task = lesson.completedTasks.find((task: ICompletedTask) => task.taskId === taskId);
-  if (!task) {
-      task = { taskId, status: 'in progress', videoUrl: '', completedAt: null };
-      lesson.completedTasks.push(task);
-  }
-
+  task.status = 'in progress';
   await user.save();
-  return task;
 };
 
-export const completeTask = async (userId: string, lessonId: string, taskId: string) => {
+export const completeTask = async (userId: string, courseId: string, lessonId: string, taskId: string) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
 
-  const lesson = user.completedLessons.find((lesson: ICompletedLesson) => lesson.lessonId === lessonId);
+  const course = user.userCourses.find((course) => course.courseId === courseId);
+  if (!course) throw new Error('Course not found');
+
+  const lesson = course.courseLessons.find((lesson) => lesson.lessonId === lessonId);
   if (!lesson) throw new Error('Lesson not found');
 
-  const task = lesson.completedTasks.find((task: ICompletedTask) => task.taskId === taskId);
-  if (task) {
-      task.status = 'complete';
-      task.completedAt = new Date();
-      updateStreak(user); // Update streak on task completion
-      await user.save();
+  const task = lesson.lessonTasks.find((task) => task.taskId === taskId);
+  if (!task) throw new Error('Task not found');
+
+  if (task.status !== 'complete') {
+    const taskData = await getTaskById(courseId, lessonId, taskId);
+    user.totalXp += taskData.xpValue;
   }
+
+  task.status = 'complete';
+  task.completedAt = new Date();
+
+  await updateStreak(user);
+
+  await user.save();
+};
+
+export const completeLesson = async (userId: string, courseId: string, lessonId: string) => {
+  const user = await User.findOne({ userId });
+  if (!user) throw new Error('User not found');
+
+  const course = user.userCourses.find((course) => course.courseId === courseId);
+  if (!course) throw new Error('Course not found');
+
+  const lesson = course.courseLessons.find((lesson) => lesson.lessonId === lessonId);
+  if (!lesson) throw new Error('Lesson not found');
+
+  // Check if all tasks are complete
+  const allTasksComplete = lesson.lessonTasks.every((task) => task.status === 'complete');
+  if (!allTasksComplete) throw new Error('Not all tasks are complete');
+
+  lesson.status = 'complete';
+  lesson.completedAt = new Date();
+
+  await user.save();
+};
+
+export const completeCourse = async (userId: string, courseId: string) => {
+  const user = await User.findOne({ userId });
+  if (!user) throw new Error('User not found');
+
+  const course = user.userCourses.find((course) => course.courseId === courseId);
+  if (!course) throw new Error('Course not found');
+
+  // Check if all lessons are complete
+  const allLessonsComplete = course.courseLessons.every((lesson) => lesson.status === 'complete');
+  if (!allLessonsComplete) throw new Error('Not all lessons are complete');
+
+  course.status = 'complete';
+  course.completedAt = new Date();
+
+  await user.save();
+};
+
+export const getUserQuizzes = async (userId: string) => {
+  const user = await User.findOne({ userId }).select('userQuizzes');
+  return user?.userQuizzes || [];
 };
