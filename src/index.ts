@@ -6,13 +6,16 @@ import lessonRouter from "./routes/lessonRoutes";
 import taskRouter from "./routes/taskRoutes";
 import userRouter from "./routes/userRoutes";
 import quizRouter from "./llm/llmRoutes";
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 
 const app = express();
+app.use(bodyParser.json());
 const port = process.env.PORT || 5000;
 
-// app.use(cors());
+app.use(cors());
 
 connectToMongoDB().catch((error) => {
   console.error("Failed to connect to MongoDB", error);

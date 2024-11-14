@@ -50,6 +50,7 @@ Quiz Structure
 
 Do not include identical questions in the same quiz instance. Randomize the quiz questions and answer options to ensure each quiz is unique.
 You can randomly choose from 60% to 80% of words to create questions.
+in your response include JSON structure of the quiz as specified in the system prompt. each question should be unique and include xpValue that is shown in ${quizTemplates} depending on type of question .
 The JSON format should be as follows, corresponding to specific chosen queston type:
 ${quizTemplates}
 `;
