@@ -112,7 +112,7 @@ class LLMService {
     return `Generate a sign language quiz based on the following vocabulary words and video URLs :\n\n${formattedVocabulary}\n\n. 
         Create a mix of question types (Multiple Choice, True/False, Fill in the Blank, Matching) as previously defined.
         Make sure the quiz order is randomized.
-        Create at least one multiple-choice question, true/false question, fill-in-the-blank question, and a matching exercise based on this vocabulary.
+        Create at least one multiple-choice question, true/false question, fill-in-the-blank question based on this vocabulary.
         - Randomize the order of questions and answers.
         - Ensure each quiz is unique and balanced across question types.
 

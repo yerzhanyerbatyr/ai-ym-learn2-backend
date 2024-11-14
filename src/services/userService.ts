@@ -2,6 +2,7 @@ import User, { IUser, ILesson, ITask, ICourse } from '../models/userModel';
 import CourseService from './courseService';
 import { getLessonById } from './lessonService';
 import { getTaskById } from './taskService';
+import LLMService from '../llm/llmService';
 
 export const createUser = async (userData: IUser) => {
   const user = new User(userData);
@@ -272,7 +273,116 @@ export const completeCourse = async (userId: string, courseId: string) => {
   await user.save();
 };
 
+export const generateQuiz = async (userId: string, courseId: string) => {
+  const user = await User.findOne({ userId });
+  if (!user) throw new Error('User not found');
+  const llmService = new LLMService();
+  
+  // Generate quiz using your existing AI function
+  const generatedQuiz = await llmService.generateQuiz(courseId);
+  console.log(generatedQuiz)
+  const quizData = JSON.parse(generatedQuiz);
+  console.log(quizData)
+
+  // Initialize exercises with 'incomplete' status
+  const exercises = quizData.quiz.map((exercise: any) => ({
+    status: 'incomplete',
+    description: exercise.description,
+    answerOptions: exercise.answerOptions,
+    correctAnswer: exercise.correctAnswer,
+    xpValue: 75,
+  }));
+
+  // Create the new quiz
+  const quiz = {
+    exercises,
+    score: null,
+    completedAt: null,
+  };
+
+  // Add the quiz to the user's quizzes
+  user.userQuizzes.push(quiz);
+  await user.save();
+};
+
 export const getUserQuizzes = async (userId: string) => {
   const user = await User.findOne({ userId }).select('userQuizzes');
   return user?.userQuizzes || [];
+};
+
+export const getQuizById = async (userId: string, quizId: string) => {
+  const user = await User.findOne({ userId });
+  if (!user) throw new Error('User not found');
+
+  const quiz = user.userQuizzes.id(quizId);
+  if (!quiz) throw new Error('Quiz not found');
+
+  return quiz.exercises;
+};
+
+export const startExercise = async (userId: string, quizId: string, exerciseId: string) => {
+  const user = await User.findOne({ userId });
+  if (!user) throw new Error('User not found');
+
+  const quiz = user.userQuizzes.id(quizId);
+  if (!quiz) throw new Error('Quiz not found');
+
+  const exercise = quiz.exercises.id(exerciseId);
+  if (!exercise) throw new Error('Exercise not found');
+
+  // Change status to 'in progress'
+  if (exercise.status === 'complete') throw new Error('Exercise already completed');
+  exercise.status = 'in progress';
+
+  await user.save();
+};
+
+export const completeExercise = async (userId: string, quizId: string, exerciseId: string, userAnswer: string) => {
+  const user = await User.findOne({ userId });
+  if (!user) throw new Error('User not found');
+
+  const quiz = user.userQuizzes.id(quizId);
+  if (!quiz) throw new Error('Quiz not found');
+
+  const exercise = quiz.exercises.id(exerciseId);
+  if (!exercise) throw new Error('Exercise not found');
+
+  // Check if the exercise is already complete
+  if (exercise.status === 'pass') throw new Error('Exercise already completed');
+
+  // Check user answer
+  if (userAnswer === exercise.correctAnswer) {
+    if (exercise.status !== 'pass') {
+      exercise.status = 'pass';
+      user.totalXp += exercise.xpValue;
+    }
+  } else {
+    exercise.status = 'fail';
+  }
+
+  // Update streak and last active day
+  await updateStreak(user);
+  exercise.completedAt = new Date();
+
+  await user.save();
+};
+
+export const completeQuiz = async (userId: string, quizId: string) => {
+  const user = await User.findOne({ userId });
+  if (!user) throw new Error('User not found');
+
+  const quiz = user.userQuizzes.id(quizId);
+  if (!quiz) throw new Error('Quiz not found');
+
+  // Check if all exercises are completed
+  const allCompleted = quiz.exercises.every((exercise) => exercise.status === 'pass' || exercise.status === 'fail');
+  if (!allCompleted) throw new Error('Not all exercises are completed');
+
+  // Calculate score: percentage of exercises that passed
+  const passedExercises = quiz.exercises.filter((exercise) => exercise.status === 'pass').length;
+  const totalExercises = quiz.exercises.length;
+  quiz.score = Math.round((passedExercises / totalExercises) * 100);
+  quiz.completedAt = new Date();
+
+  await user.save();
 };

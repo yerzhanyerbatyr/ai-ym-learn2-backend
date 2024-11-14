@@ -14,13 +14,20 @@ userRouter.get('/:userId/user-in-progress-lesson-id', userController.getInProgre
 
 userRouter.get('/:userId/lessons/:lessonId/tasks', userController.getLessonTasks);
 
-userRouter.post('/course/start', userController.startCourseController);
-userRouter.post('/task/start', userController.startTaskController);
-userRouter.post('/task/complete', userController.completeTaskController);
-userRouter.post('/lesson/complete', userController.completeLessonController);
-userRouter.post('/course/complete', userController.completeCourseController);
+userRouter.put('/:userId/course/:courseId/start', userController.startCourseController);
+userRouter.put('/:userId/course/:courseId/complete', userController.completeCourseController);
 
-userRouter.get('/:userId/quizes', userController.getUserQuizzes);
+userRouter.put('/:userId/course/:courseId/lesson/:lessonId/complete', userController.completeLessonController);
+
+userRouter.put('/:userId/course/:courseId/lesson/:lessonId/task/:taskId/start', userController.startTaskController);
+userRouter.put('/:userId/course/:courseId/lesson/:lessonId/task/:taskId/complete', userController.completeTaskController);
+
+userRouter.post('/:userId/quiz/generate', userController.generateQuizController);
+userRouter.get('/:userId/quizzes', userController.getQuizzesByUserController);
+userRouter.get('/:userId/quiz/:quizId', userController.getQuizByIdController);
+userRouter.put('/:userId/quiz/:quizId/exercise/:exerciseId/start', userController.startExerciseController);
+userRouter.put('/:userId/quiz/:quizId/exercise/:exerciseId/complete', userController.completeExerciseController);
+userRouter.put('/:userId/quiz/:quizId/complete', userController.completeQuizController);
 
 
 // userRouter.post('/lesson/start', startLessonController);

@@ -91,7 +91,7 @@ export const getLessonTasks = async (req: Request, res: Response) => {
 
 export const startCourseController = async (req: Request, res: Response) => {
   try {
-    const { userId, courseId } = req.body;
+    const { userId, courseId } = req.params;
     await userService.startCourse(userId, courseId);
     res.status(200).json({ message: 'Course started successfully' });
   } catch (error) {
@@ -101,7 +101,7 @@ export const startCourseController = async (req: Request, res: Response) => {
 
 export const startTaskController = async (req: Request, res: Response) => {
   try {
-    const { userId, courseId, lessonId, taskId } = req.body;
+    const { userId, courseId, lessonId, taskId } = req.params;
     await userService.startTask(userId, courseId, lessonId, taskId);
     res.status(200).json({ message: 'Task started successfully' });
   } catch (error) {
@@ -111,7 +111,7 @@ export const startTaskController = async (req: Request, res: Response) => {
 
 export const completeTaskController = async (req: Request, res: Response) => {
   try {
-    const { userId, courseId, lessonId, taskId } = req.body;
+    const { userId, courseId, lessonId, taskId } = req.params;
     await userService.completeTask(userId, courseId, lessonId, taskId);
     res.status(200).json({ message: 'Task completed successfully' });
   } catch (error) {
@@ -121,7 +121,7 @@ export const completeTaskController = async (req: Request, res: Response) => {
 
 export const completeLessonController = async (req: Request, res: Response) => {
   try {
-    const { userId, courseId, lessonId } = req.body;
+    const { userId, courseId, lessonId } = req.params;
     await userService.completeLesson(userId, courseId, lessonId);
     res.status(200).json({ message: 'Lesson completed successfully' });
   } catch (error) {
@@ -131,7 +131,7 @@ export const completeLessonController = async (req: Request, res: Response) => {
 
 export const completeCourseController = async (req: Request, res: Response) => {
   try {
-    const { userId, courseId } = req.body;
+    const { userId, courseId } = req.params;
     await userService.completeCourse(userId, courseId);
     res.status(200).json({ message: 'Course completed successfully' });
   } catch (error) {
@@ -139,11 +139,64 @@ export const completeCourseController = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserQuizzes = async (req: Request, res: Response) => {
+export const generateQuizController = async (req: Request, res: Response) => {
   try {
-    const userQuizzes = await userService.getUserQuizzes(req.params.userId);
-    res.status(200).json(userQuizzes);
-  } catch (error) {
-    res.status(500).json({ error: 'Error fetching quiz history' });
+    const { userId } = req.params;
+    const { courseId } = req.body;
+    await userService.generateQuiz(userId, courseId);
+    res.status(201).json({ message: 'Quiz generated successfully' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getQuizzesByUserController = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const quizzes = await userService.getUserQuizzes(userId);
+    res.status(200).json(quizzes);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const getQuizByIdController = async (req: Request, res: Response) => {
+  try {
+    const { userId, quizId } = req.params;
+    const exercises = await userService.getQuizById(userId, quizId);
+    res.status(200).json(exercises);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const startExerciseController = async (req: Request, res: Response) => {
+  try {
+    const { userId, quizId, exerciseId } = req.params;
+    await userService.startExercise(userId, quizId, exerciseId);
+    res.status(200).json({ message: 'Exercise started successfully' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const completeExerciseController = async (req: Request, res: Response) => {
+  try {
+    const { userId, quizId, exerciseId } = req.params;
+    const { userAnswer } = req.body;
+    await userService.completeExercise(userId, quizId, exerciseId, userAnswer);
+    res.status(200).json({ message: 'Exercise completed successfully' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const completeQuizController = async (req: Request, res: Response) => {
+  try {
+    const { userId, quizId } = req.params;
+    await userService.completeQuiz(userId, quizId);
+    res.status(200).json({ message: 'Quiz completed successfully' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
 };

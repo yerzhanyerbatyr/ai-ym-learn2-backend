@@ -22,14 +22,17 @@ export interface ICourse extends Document {
 }
 
 export interface IQuiz extends Document {
-    quizId: number;
     exercises: IExercise[];
     score: number;
+    completedAt: Date;
 }
 
 export interface IExercise extends Document {
-    exerciseId: number;
     status: string;
+    description: string;
+    answerOptions: string[];
+    correctAnswer: string;
+    xpValue: number;
 }
 
 export interface IUser extends Document {
@@ -42,14 +45,17 @@ export interface IUser extends Document {
 }
 
 const exerciseSchema = new Schema<IExercise>({
-    exerciseId: { type: Number, required: true },
     status: { type: String, default: "incomplete" },
+    description: { type: String, required: true },
+    answerOptions: { type: [String], required: true },
+    correctAnswer: { type: String, required: true },
+    xpValue: { type: Number, required: true },
 });
 
 const quizSchema = new Schema<IQuiz>({
-    quizId: { type: Number, required: true },
     exercises: [exerciseSchema],
     score: { type: Number, required: true },
+    completedAt: Date,
 });
 
 const taskSchema = new Schema<ITask>({
