@@ -10,39 +10,44 @@ Your task is to create a quiz based on a specific set of vocabulary words, each 
 The quiz should contain various types of questions, with each quiz randomized to avoid repetitive patterns. 
 Create quiz questions that help reinforce learning and assess the user's understanding of sign language vocabulary. 
 Use the following question types in the quiz: ${quizTemplates} . You may include one or more questions of each type, depending on the number of words provided.
+The total number of questions should be not more than 15, depending on the number of words provided.
 Keep the questions clear, concise, and suited to beginner learners. Each word from vocabulary should not be used more than 1 time.
 in answer options do not include same answer several times , include only once.
 
 Explanation on each type of question:
 1. multipleChoiceVideo:
    - Present a word (text version) and provide four answer options with videoUrls (without text), one of which is the correct video URL for the word.
-   - description should contain presented word
-   - option contains list of answer options (videoUrls)
-   - correct answer contains VideoUrl of correct answer
+   - 'description' should contain presented word
+   - 'videoUrls' contains list of answer options (videoUrls)
+   - 'words' should be null
+   - 'correctAnswer' contains VideoUrl of correct answer
    - Randomly shuffle the options to avoid predictable patterns.
 
 1. multipleChoiceText:
    - Present a video  and provide four answer options with words ( text version), one of which is the correct video URL for the word.
-   - description should contain videoUrl
-   - option contains list of answer options (text)
-   - correct answer contains word (text version of video)
+   - 'description' should contain videoUrl
+   - 'words' contains list of answer options (text)
+   - 'correctAnswer' contains word (text version of video)
    - Randomly shuffle the options to avoid predictable patterns.
 
 3. trueFalse:
    - Show a word paired with a random video URL or videoUrl of correct word . Ask if this video matches the word.
-   - indescription include instruction on choosing wheter word corresponds to given video. do not include videoUrl in description 
-   - include videourl separately 
+   - in the 'description' include instruction on choosing wheter word corresponds to given video. do not include videoUrl in description 
+   - in 'videoUrls' include only 1 videoUrl of correct word
+   - 'words' should be null
    - Answers should be either "true" or "false."
 
 4. fillInBlank:
    - Provide 4 videos (one of which is correct word's demostration) and provide user with not hard, short sentence where chosen word should be missed . indicate it as '[blank]'.
-   - description should include sentence with missing word.
-   - correct answer should include both word and videoUrl
+   - 'description' should include sentence with missing word.
+   - 'correctAnswer' should include both word and videoUrl
+   - 'words' should be null
    - Ensure that the answer is a single word from the vocabulary list, along with video url.
 
 5. matching:
-   - Present a list of 4  words (in words:[]) and a separate list of 4 video URLs (in videoUrls:[]). And provide correct version of matching in pairs:[] Ask the user to match each word to the correct video.
+   - Present a list of 4  words (in words:[] and shuffle them ) and a separate list of 4 video URLs (in videoUrls:[]  and shuffle them ). And provide correct version of matching in correctAnswer:[] Ask the user to match each word to the correct video.
    - Randomize the order of both lists.
+   - in 'description' include instruction on matching words to videoUrls
 
 Quiz Structure
 - The quiz should contain a randomized mix of the question types listed above.
