@@ -296,6 +296,7 @@ export const generateQuiz = async (userId: string, courseId: string) => {
     words: exercise.words,
     videoUrls: exercise.videoUrls,
     correctAnswer: exercise.correctAnswer,
+    userChoice: null,
     xpValue: exercise.xpValue,
   }));
 
@@ -337,13 +338,13 @@ export const startExercise = async (userId: string, quizId: string, exerciseId: 
   if (!exercise) throw new Error('Exercise not found');
 
   // Change status to 'in progress'
-  if (exercise.status === 'complete') throw new Error('Exercise already completed');
+  if (exercise.status === 'pass') throw new Error('Exercise already completed');
   exercise.status = 'in progress';
 
   await user.save();
 };
 
-export const completeExercise = async (userId: string, quizId: string, exerciseId: string, userAnswer: string) => {
+export const completeExercise = async (userId: string, quizId: string, exerciseId: string, userAnswer: string, userChoice: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string }) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
 
@@ -357,7 +358,7 @@ export const completeExercise = async (userId: string, quizId: string, exerciseI
   if (exercise.status === 'pass') throw new Error('Exercise already completed');
 
   // Check user answer
-  if (userAnswer) {
+  if (userAnswer === 'pass') {
     if (exercise.status !== 'pass') {
       exercise.status = 'pass';
       user.totalXp += exercise.xpValue;
@@ -369,7 +370,9 @@ export const completeExercise = async (userId: string, quizId: string, exerciseI
   // Update streak and last active day
   await updateStreak(user);
   exercise.completedAt = new Date();
-
+  exercise.userChoice = userChoice;
+  await user.save();
+  
   const allExercisesCompleted = quiz.exercises.every((ex) => ex.status === 'pass' || ex.status === 'fail');
   if (allExercisesCompleted) {
     await completeQuiz(userId, quizId);
@@ -390,9 +393,14 @@ export const completeQuiz = async (userId: string, quizId: string) => {
   if (!allCompleted) throw new Error('Not all exercises are completed');
 
   // Calculate score: percentage of exercises that passed
-  const passedExercises = quiz.exercises.filter((exercise) => exercise.status === 'pass').length;
-  const totalExercises = quiz.exercises.length;
-  quiz.score = Math.round((passedExercises / totalExercises) * 100);
+  const totalXpValue = quiz.exercises.reduce((sum, exercise) => sum + exercise.xpValue, 0);
+  const passedXpValue = quiz.exercises
+    .filter((exercise) => exercise.status === 'pass')
+    .reduce((sum, exercise) => sum + exercise.xpValue, 0);
+
+  // Avoid division by zero
+  const score = totalXpValue > 0 ? Math.round((passedXpValue / totalXpValue) * 100) : 0;
+  quiz.score = score;
   quiz.completedAt = new Date();
 
   await user.save();
