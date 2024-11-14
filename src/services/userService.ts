@@ -79,11 +79,9 @@ export const getLessonTasksById = async (userId: string, lessonId: string) => {
 export const startCourse = async (userId: string, courseId: string) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
-  console.log("I got here")
+
   // Check if the course already exists in userCourses
   let course = user.userCourses.find((course: ICourse) => course.courseId.toString() === courseId);
-  console.log("I got the course")
-  console.log(course)
 
   if (course) {
     // Check if there is already a lesson in progress
@@ -100,8 +98,6 @@ export const startCourse = async (userId: string, courseId: string) => {
       (index === 0 || lessons[index - 1].status === 'complete')
     );
 
-    console.log(nextLesson)
-
     if (!nextLesson) throw new Error('No more lessons to start in this course');
 
     // Set the next lesson status to 'in progress'
@@ -116,11 +112,9 @@ export const startCourse = async (userId: string, courseId: string) => {
     }));
     
   } else {
-    console.log("Here in the else")
     // Initialize the course if it does not exist
     const courseData = await CourseService.getCourseById(courseId);
-    console.log("Here is the courseData")
-    console.log(courseData)
+
     if (!courseData) throw new Error('Course not found');
 
     // Map all lessons with status 'not started'
@@ -133,10 +127,10 @@ export const startCourse = async (userId: string, courseId: string) => {
 
     // Set the first lesson status to 'in progress' and fetch its tasks
     courseLessons[0].status = 'in progress';
-    console.log(courseLessons[0]);
-    console.log(courseLessons[0].lessonId);
+
     const lesson = await getLessonById(courseId, courseLessons[0].lessonId);
     const fetchedTasks = lesson.tasks;
+
     courseLessons[0].lessonTasks = fetchedTasks.map((task) => ({
       taskId: task._id.toString(),
       status: 'incomplete',
@@ -144,7 +138,6 @@ export const startCourse = async (userId: string, courseId: string) => {
       completedAt: null,
     }));
 
-    console.log(courseLessons[0].lessonTasks)
     // Add the new course to userCourses
     course = {
       courseId,
@@ -152,10 +145,8 @@ export const startCourse = async (userId: string, courseId: string) => {
       completedAt: null,
       courseLessons,
     };
-    console.log("Im pushing this:")
-    console.log(course.courseLessons[0].lessonTasks)
+    
     user.userCourses.push(course);
-    console.log("pushed")
   }
 
   // Save the user with the updated course data
@@ -301,9 +292,11 @@ export const generateQuiz = async (userId: string, courseId: string) => {
   const exercises = quizData.quiz.map((exercise: any) => ({
     status: 'incomplete',
     description: exercise.description,
-    answerOptions: exercise.answerOptions,
+    type: exercise.type,
+    words: exercise.words,
+    videoUrls: exercise.videoUrls,
     correctAnswer: exercise.correctAnswer,
-    xpValue: 75,
+    xpValue: exercise.xpValue,
   }));
 
   // Create the new quiz
@@ -364,7 +357,7 @@ export const completeExercise = async (userId: string, quizId: string, exerciseI
   if (exercise.status === 'pass') throw new Error('Exercise already completed');
 
   // Check user answer
-  if (userAnswer === exercise.correctAnswer) {
+  if (userAnswer) {
     if (exercise.status !== 'pass') {
       exercise.status = 'pass';
       user.totalXp += exercise.xpValue;
@@ -376,6 +369,11 @@ export const completeExercise = async (userId: string, quizId: string, exerciseI
   // Update streak and last active day
   await updateStreak(user);
   exercise.completedAt = new Date();
+
+  const allExercisesCompleted = quiz.exercises.every((ex) => ex.status === 'pass' || ex.status === 'fail');
+  if (allExercisesCompleted) {
+    await completeQuiz(userId, quizId);
+  }
 
   await user.save();
 };

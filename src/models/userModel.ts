@@ -30,8 +30,10 @@ export interface IQuiz extends Document {
 export interface IExercise extends Document {
     status: string;
     description: string;
-    answerOptions: string[];
-    correctAnswer: string;
+    type: string;
+    words: string[];
+    videoUrls: string[];
+    correctAnswer: string | Array<{ word: string; videoUrl: string }>;
     xpValue: number;
 }
 
@@ -45,11 +47,13 @@ export interface IUser extends Document {
 }
 
 const exerciseSchema = new Schema<IExercise>({
-    status: { type: String, default: "incomplete" },
-    description: { type: String, required: true },
-    answerOptions: { type: [String], required: true },
-    correctAnswer: { type: String, required: true },
-    xpValue: { type: Number, required: true },
+  status: { type: String, default: 'incomplete' },
+  description: { type: String, required: true },
+  type: { type: String, required: true },
+  words: { type: [String], default: [] },
+  videoUrls: { type: [String], default: [] },
+  correctAnswer: { type: Schema.Types.Mixed, required: true }, // Supports both string and array
+  xpValue: { type: Number, required: true },
 });
 
 const quizSchema = new Schema<IQuiz>({
