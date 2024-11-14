@@ -129,16 +129,6 @@ export const completeLessonController = async (req: Request, res: Response) => {
   }
 };
 
-export const completeCourseController = async (req: Request, res: Response) => {
-  try {
-    const { userId, courseId } = req.params;
-    await userService.completeCourse(userId, courseId);
-    res.status(200).json({ message: 'Course completed successfully' });
-  } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
-  }
-};
-
 export const generateQuizController = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;

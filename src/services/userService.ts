@@ -5,6 +5,13 @@ import { getTaskById } from './taskService';
 import LLMService from '../llm/llmService';
 
 export const createUser = async (userData: IUser) => {
+  // Check if a user with the given userId already exists
+  const existingUser = await User.findOne({ userId: userData.userId });
+  if (existingUser) {
+    throw new Error(`User with userId ${userData.userId} already exists`);
+  }
+
+  // Create a new user if no existing user is found
   const user = new User(userData);
   return await user.save();
 };
@@ -252,6 +259,12 @@ export const completeLesson = async (userId: string, courseId: string, lessonId:
 
   lesson.status = 'complete';
   lesson.completedAt = new Date();
+
+  const lastLesson = course.courseLessons[course.courseLessons.length - 1];
+  if (lastLesson.lessonId === lessonId) {
+    console.log("Last lesson completed, marking the course as complete");
+    await completeCourse(userId, courseId);
+  }
 
   await user.save();
 };

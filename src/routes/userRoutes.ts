@@ -15,7 +15,6 @@ userRouter.get('/:userId/user-in-progress-lesson-id', userController.getInProgre
 userRouter.get('/:userId/lessons/:lessonId/tasks', userController.getLessonTasks);
 
 userRouter.put('/:userId/course/:courseId/start', userController.startCourseController);
-userRouter.put('/:userId/course/:courseId/complete', userController.completeCourseController);
 
 userRouter.put('/:userId/course/:courseId/lesson/:lessonId/complete', userController.completeLessonController);
 
@@ -28,11 +27,5 @@ userRouter.get('/:userId/quiz/:quizId', userController.getQuizByIdController);
 userRouter.put('/:userId/quiz/:quizId/exercise/:exerciseId/start', userController.startExerciseController);
 userRouter.put('/:userId/quiz/:quizId/exercise/:exerciseId/complete', userController.completeExerciseController);
 userRouter.put('/:userId/quiz/:quizId/complete', userController.completeQuizController);
-
-
-// userRouter.post('/lesson/start', startLessonController);
-// userRouter.post('/lesson/complete', completeLessonController);
-// userRouter.post('/task/start', startTaskController);
-// userRouter.post('/task/complete', completeTaskController);
 
 export default userRouter;
