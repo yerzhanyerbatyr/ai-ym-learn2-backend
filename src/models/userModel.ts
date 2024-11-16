@@ -33,7 +33,8 @@ export interface IExercise extends Document {
     type: string;
     words: string[];
     videoUrls: string[];
-    correctAnswer: string | Array<{ word: string; videoUrl: string }>;
+    correctAnswer: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string };
+    userChoice: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string };
     xpValue: number;
 }
 
@@ -53,12 +54,13 @@ const exerciseSchema = new Schema<IExercise>({
   words: { type: [String], default: [] },
   videoUrls: { type: [String], default: [] },
   correctAnswer: { type: Schema.Types.Mixed, required: true }, // Supports both string and array
+  userChoice: { type: Schema.Types.Mixed },
   xpValue: { type: Number, required: true },
 });
 
 const quizSchema = new Schema<IQuiz>({
     exercises: [exerciseSchema],
-    score: { type: Number, required: true },
+    score: { type: Number },
     completedAt: Date,
 });
 
