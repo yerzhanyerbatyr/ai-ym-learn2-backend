@@ -1,0 +1,830 @@
+[
+  {
+  "title": "Basics",
+  "lessons": [
+    {
+      "lessonNumber": 1,
+      "title": "Acquaintance",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "I",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1DHfxaWqxnYAJDdZ4bsojuhpL3yh1mhrt/preview",
+          "xpValue": 20,
+          "duration": 1
+        },
+        {
+          "taskNumber": 2,
+          "word": "You",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1mVYiJzv5TjRZ1b4DVUM3GfC9Pv5Yl5YH/preview",
+          "xpValue": 20,
+          "duration": 1
+        },
+        {
+          "taskNumber": 3,
+          "word": "He",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1WYIJUMkzK07OWKJWIkBTh52VjZJrOoHh/preview",
+          "xpValue": 20,
+          "duration": 1
+        },
+        {
+          "taskNumber": 4,
+          "word": "We",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/18CGDzDYAyTJiuURfBo1raUiep0mnSsIF/preview",
+          "xpValue": 20,
+          "duration": 1
+        },
+        {
+          "taskNumber": 5,
+          "word": "They",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1pL-N9lnT_uAupCm8fUCYQx-rdV018O2p/preview",
+          "xpValue": 20,
+          "duration": 1
+        },
+        {
+          "taskNumber": 6,
+          "word": "My",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1CHMibqEXhMur1AqqxjoCdBpk8lQFFjse/preview",
+          "xpValue": 20,
+          "duration": 1
+        }, 
+        {
+          "taskNumber": 7,
+          "word": "Me",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1tQZOCp4C6O72BpigS0ewvwoCA3ZR2KHo/preview",
+          "xpValue": 20,
+          "duration": 1
+        }, 
+        {
+          "taskNumber": 8,
+          "word": "I have",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1a_jafuyld8SCZzcDcrrv3d3whs2Rz91-/preview",
+          "xpValue": 20,
+          "duration": 1
+        }, 
+        {
+          "taskNumber": 9,
+          "word": "Yours",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1840d9yaITCB1dEEgvh1ndss8x3_XEGue/preview",
+          "xpValue": 20,
+          "duration": 1
+        }, 
+        {
+          "taskNumber": 10,
+          "word": "His",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1n6ZluP3mM5VFiBUJpypqXN252YR5u2YO/preview",
+          "xpValue": 20,
+          "duration": 1
+        }, 
+        {
+          "taskNumber":11,
+          "word": "Himself",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1NfRLgIWUbvanNBLwsxgo1ZD0GD14HV4T/preview",
+          "xpValue": 20,
+          "duration": 1
+        }, 
+        {
+          "taskNumber": 12,
+          "word": "Your",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1XHGLJ_1B0eP_rsMphAnclQs_Nloj5DUe/preview",
+          "xpValue": 20,
+          "duration": 1
+        }
+      ]
+    },
+    {
+      "lessonNumber": 2,
+      "title": "Questions",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Where",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/13V-QaP40zwWeOtjlw58q0SHYaafKTZT-/preview",
+          "xpValue": 50,
+          "duration": 2
+        },
+        {
+          "taskNumber": 2,
+          "word": "Why",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/10BHJEsFvnXfEc1S08ZHqlUMwTxW2ELR9/preview",
+          "xpValue": 50,
+          "duration": 2
+        },
+        {
+          "taskNumber": 3,
+          "word": "What",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1Cemgocsp27onBMBBGmRMyqAJgOwpxUxU/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 4,
+          "word": "When",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/191BH8rdd3rk2e9AXk8Gj7lpX-tghTcfb/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 5,
+          "word": "Who",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1nrd6MhOsjG2ZD6AxC-U0j64-VsSMRy0S/preview",
+          "xpValue": 50,
+          "duration": 2
+        }
+      ]
+    },
+    {
+      "lessonNumber": 3,
+      "title": "Human",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Person",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1QksGpSnqN-3E0NFtqzygdssCf7c13021/preview",
+          "xpValue": 50,
+          "duration": 2
+        },
+        {
+          "taskNumber": 2,
+          "word": "Boy",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1L3DLyBHuSQMiOaMqZspEc7FqG6Xc4TA0/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 3,
+          "word": "Man",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1GNV71oLNDplTWHEhjUpnRGV9QPTLIW8Q/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 4,
+          "word": "Woman",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1PMlVBEI97wrJhP2k9yqbx3fH9zw9UWOz/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 5,
+          "word": "Girl",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1RASayksTxuMz8Nch_eJ0JkoFL5YpSCyt/preview",
+          "xpValue": 50,
+          "duration": 2
+        }
+      ]
+    },
+    {
+      "lessonNumber": 4,
+      "title": "Family",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Family",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1U8EzobZg9dWniQzRhHyoE_sqwfOVVB9x/preview?",
+          "xpValue": 50,
+          "duration": 2
+        },
+        {
+          "taskNumber": 2,
+          "word": "Father",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/15Bj9IGDXvAevUUhsOJ5O1JvJ6nHllJ-g/preview",
+          "xpValue": 50,
+          "duration": 2
+        },
+        {
+          "taskNumber": 3,
+          "word": "Mother",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1hfXRjhdid8QWYk5B315szfmhNhpU_CM5/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 4,
+          "word": "Daughter",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1-u4Fb0oaadCCWbeGxmxHwCB7sRMLBbLW/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 5,
+          "word": "Son",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1xxI24htvPNPQjnGBxlGfjDLIeB5pJIiK/preview",
+          "xpValue": 50,
+          "duration": 2
+        }, 
+        {
+          "taskNumber": 6,
+          "word": "Grandmother",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1PMCl1O2MoBpZwKRXCtPX0m5cFyVryYM4/preview",
+          "xpValue": 50,
+          "duration": 2
+        },
+        {
+          "taskNumber": 7,
+          "word": "Grandfather",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1Lr0FWLyDywekfjiRkpoQhJXhkBQF_x35/preview",
+          "xpValue": 50,
+          "duration": 2
+        }
+      ]
+    },
+    {
+      "lessonNumber": 5,
+      "title": "Family Extended",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Uncle",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1u3kmqSywhw4cNHrcVcUhzI5iRwzDYsrU/preview",
+          "xpValue": 50,
+          "duration": 2
+        },
+        {
+          "taskNumber": 2,
+          "word": "Aunt",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1HrEp0yj4q7z8fn1ATFMTA0LaeXurQJg5/preview",
+          "xpValue": 50,
+          "duration": 2
+        }
+      ]
+    }
+  ],
+  "quiz": []
+},
+{
+  "title": "Emotion. Feelings. State.",
+  "lessons": [
+    {
+      "lessonNumber": 1,
+      "title": "Lesson 1",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Honesty",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1PMsIC4_M_U1cw7PwbGy9b6vecEc9IkqI/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Fight",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/153qGVq-jLbUqtpOaP7X6LeGSOvTZ8gly/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 2,
+      "title": "Lesson 2",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Confrontation",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1hPzZPh16YQs9IkjzFuNWLpBaPR5km7b2/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Problem",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1n_yKXXHXLxVQdy4pdvzpBBzhCLa-Ra8e/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 3,
+      "title": "Lesson 3",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Doubt",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1Fy4xL13ipIkxqK6nXGh0R2sfb8NmwVKa/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Negligence",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1kPEMtTPEqv7lNhuz4IOO7F5idILPggPm/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 4,
+      "title": "Lesson 4",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Active",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1k33BzclrRsgxsjUrR4LNuuXO_uvBe0hE/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Scold",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1cdeBX8--FMsgquwgb_TkjuXGfcSv5WiE/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 5,
+      "title": "Lesson 5",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Carefully",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/11jdSb9KK7b9Zle010YOMmP97jVAMvKFt/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Be afraid",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1QCeHmtDAfRXuOvpS-L_u9gTcDVwf0K-e/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    }
+  ],
+  "quiz": []
+}, 
+{
+  "title": "Time",
+  "lessons": [
+    {
+      "lessonNumber": 1,
+      "title": "Lesson 1",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Time",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1cbAjnjsNpD-JnU9B0SYI1oPTjHyYLYv6/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Yesterday",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1HpIkLbnOsJ5XjQDnsWeSDxOearTw8kM-/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 2,
+      "title": "Lesson 2",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Year",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1F69ttGeuHoWSgAeeTP5W7Du_mq6enpYq/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Day",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1yu63BuAzTGHkkB38ixZSq_I_erMTmNKX/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 3,
+      "title": "Lesson 3",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Two years ago",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1JbbGmGRM48MOdn7h7g8SfQQAFO6JAwyO/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Two months",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1Y6v7hMDrLYBpFdmV_iITAKVtchMEksCe/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 4,
+      "title": "Lesson 4",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Two hours",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1rip28g8_4s1-ley9yn1kq1kuufop9JET/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Two minutes",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1mYZMENCtlXNDTBvUzD9JjfqTnzj5PsNu/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 5,
+      "title": "Lesson 5",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Two weeks",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1cCB9ETaHHzTH2MutwO-azw4fdYBduOgN/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Last year",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1KBuvkIB_rihNVU2daEdkjsGKjlt5ex8f/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    }
+  ],
+  "quiz": []
+}, 
+{
+  "title": "Nature",
+  "lessons": [
+    {
+      "lessonNumber": 1,
+      "title": "Lesson 1",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Wind",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1sUeFW_pU2qyfu7_pEkxD2yhS60f_wr6D/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Water",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1KebkwWjZ5G3kIXsgWQMSpA3k6LZiUK-5/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 2,
+      "title": "Lesson 2",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Clay",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1VfXpAK9ol8_8BHKzPbAXu0c4dHWRyhp0/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Mountains",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1dkCkXWeOrkqZuTfqjzw6B565Ku8boC5x/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 3,
+      "title": "Lesson 3",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Hail",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1afsLsXaAZg93n3eGqzUVIfAPJvCvVp9k/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Thunder",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1weEVK51U7ZjVf871CsNAbouBWsvwquTF/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 4,
+      "title": "Lesson 4",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Rain",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/10aixjRvPsLkP5h79RoVkuBV416i_HOWP/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Star",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1DpeXAFOZCFX58JpxKWyn7w_Ftyl-mtuJ/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Stars",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1p3IaFAxLeexwFwH3uj6G3kd_H12Ix1qC/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 5,
+      "title": "Lesson 5",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Earth",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/125lP3LosVZ7_nGHWYFdUmHRmrZMXKIpv/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Stone",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1-qYh2GhhuSHX5IxWVD6WV79bL_N9_zNm/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    }
+  ],
+  "quiz": []
+}, 
+{
+  "title": "In the animal world",
+  "lessons": [
+    {
+      "lessonNumber": 1,
+      "title": "Lesson 1",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Butterfly",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/11fAJiIy4cUNMHRzzfeLeAe4Wrfq33Jgt/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Ram",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1c6CWklsWcqsNK3IXZ_Gp7xGxv_GfOHA7/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 2,
+      "title": "Lesson 2",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Hippopotamus",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/10kkywJnsO4b6FrvnTegPGhoRr4xFhzZB/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Flea",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1Z-h1W-007UxABtAcja3nLaTdWpSzy419/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 3,
+      "title": "Lesson 3",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Bull",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1XLRbBKJnDmHXNTj4anNdXm_NbDqtQ4yr/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Camel",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1weEVK51U7ZjVf871CsNAbouBWsvwquTF/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 4,
+      "title": "Lesson 4",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Lice",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1CkJXcPo_5EOEjRyOvI3xhaFR3-slTEKy/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Wolf",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1d0oZ7AXbEgJoZIOyTYdOOOlhrR685lRl/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    },
+    {
+      "lessonNumber": 5,
+      "title": "Lesson 5",
+      "tasks": [
+        {
+          "taskNumber": 1,
+          "word": "Nest",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1l26tIEF43XGQmUO_oOBhLSbxeD7QehEG/preview",
+          "xpValue": 50,
+          "duration": 10
+        }, 
+        {
+          "taskNumber": 2,
+          "word": "Caterpillar",
+          "description": "Task description",
+          "status": "incomplete",
+          "videoUrl": "https://drive.google.com/file/d/1T5nDg19H75bYLf_VfY4JoOVWp8hPDD-a/preview",
+          "xpValue": 50,
+          "duration": 10
+        }
+      ]
+    }
+  ],
+  "quiz": []
+}
+]
