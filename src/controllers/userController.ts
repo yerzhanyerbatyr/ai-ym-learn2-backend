@@ -173,8 +173,8 @@ export const startExerciseController = async (req: Request, res: Response) => {
 export const completeExerciseController = async (req: Request, res: Response) => {
   try {
     const { userId, quizId, exerciseId } = req.params;
-    const { userAnswer, userChoice } = req.body;
-    await userService.completeExercise(userId, quizId, exerciseId, userAnswer, userChoice);
+    const { correctAnswer, userChoice } = req.body;
+    await userService.completeExercise(userId, quizId, exerciseId, correctAnswer, userChoice);
     res.status(200).json({ message: 'Exercise completed successfully' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
