@@ -354,11 +354,9 @@ export const completeExercise = async (userId: string, quizId: string, exerciseI
   const exercise = quiz.exercises.id(exerciseId);
   if (!exercise) throw new Error('Exercise not found');
 
-  // Check if the exercise is already complete
   if (exercise.status === 'pass') throw new Error('Exercise already completed');
 
-  // Check user answer
-  if (userAnswer === 'pass') {
+  if (userAnswer === userChoice) {
     if (exercise.status !== 'pass') {
       exercise.status = 'pass';
       user.totalXp += exercise.xpValue;
@@ -367,7 +365,6 @@ export const completeExercise = async (userId: string, quizId: string, exerciseI
     exercise.status = 'fail';
   }
 
-  // Update streak and last active day
   await updateStreak(user);
   exercise.completedAt = new Date();
   exercise.userChoice = userChoice;
