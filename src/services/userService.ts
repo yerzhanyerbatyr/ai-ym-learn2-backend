@@ -357,7 +357,7 @@ export const startExercise = async (userId: string, quizId: string, exerciseId: 
   await user.save();
 };
 
-export const completeExercise = async (userId: string, quizId: string, exerciseId: string, correctAnswer: string, userChoice: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string }) => {
+export const completeExercise = async (userId: string, quizId: string, exerciseId: string, userChoice: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string }) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
 
@@ -366,6 +366,8 @@ export const completeExercise = async (userId: string, quizId: string, exerciseI
 
   const exercise = quiz.exercises.id(exerciseId);
   if (!exercise) throw new Error('Exercise not found');
+
+  const correctAnswer = exercise.correctAnswer;
 
   if (exercise.status === 'pass') throw new Error('Exercise already completed');
 
