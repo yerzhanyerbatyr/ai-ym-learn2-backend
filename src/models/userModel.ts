@@ -16,15 +16,17 @@ export interface ILesson extends Document {
 
 export interface ICourse extends Document {
   courseId: string;
+  courseTitle: string;
   status: string; // e.g., 'complete', 'incomplete'
   completedAt: Date;
   courseLessons: ILesson[];
 }
 
 export interface IQuiz extends Document {
-    exercises: IExercise[];
-    score: number;
-    completedAt: Date;
+  title: string;
+  exercises: IExercise[];
+  score: number;
+  completedAt: Date;
 }
 
 export interface IExercise extends Document {
@@ -59,6 +61,7 @@ const exerciseSchema = new Schema<IExercise>({
 });
 
 const quizSchema = new Schema<IQuiz>({
+    title: { type: String, required: true },
     exercises: [exerciseSchema],
     score: { type: Number },
     completedAt: Date,
@@ -88,6 +91,7 @@ const courseSchema = new Schema<ICourse>({
     ref: "Course",
     required: true,
   },
+  courseTitle: { type: String, required: true },
   status: { type: String, default: "incomplete" },
   completedAt: Date,
   courseLessons: [lessonSchema],

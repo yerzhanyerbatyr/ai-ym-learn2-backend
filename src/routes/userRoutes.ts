@@ -20,7 +20,7 @@ userRouter.put('/:userId/course/:courseId/lesson/:lessonId/complete', userContro
 
 userRouter.put('/:userId/course/:courseId/lesson/:lessonId/task/:taskId/start', userController.startTaskController);
 userRouter.put('/:userId/course/:courseId/lesson/:lessonId/task/:taskId/complete', userController.completeTaskController);
-
+// user/:userId/quiz/generate
 userRouter.post('/:userId/quiz/generate', userController.generateQuizController);
 userRouter.get('/:userId/quizzes', userController.getQuizzesByUserController);
 userRouter.get('/:userId/quiz/:quizId', userController.getQuizByIdController);

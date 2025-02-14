@@ -40,7 +40,7 @@ Explanation on each type of question:
 4. fillInBlank:
    - Provide 4 videos (one of which is correct word's demostration) and provide user with not hard, short sentence where chosen word should be missed . indicate it as '[blank]'.
    - 'description' should include sentence with missing word.
-   - 'correctAnswer' should include both word and videoUrl
+   - 'correctAnswer' should include videoUrl
    - 'words' should be null
    - Ensure that the answer is a single word from the vocabulary list, along with video url.
 

@@ -117,6 +117,10 @@ export const startCourse = async (userId: string, courseId: string) => {
 
     if (!courseData) throw new Error('Course not found');
 
+    const courseTitle = courseData.title;
+
+    console.log("courseTitle", courseTitle)
+
     // Map all lessons with status 'not started'
     const courseLessons: ILesson[] = courseData.lessons.map((lesson) => ({
       lessonId: lesson._id.toString(),
@@ -141,6 +145,7 @@ export const startCourse = async (userId: string, courseId: string) => {
     // Add the new course to userCourses
     course = {
       courseId,
+      courseTitle,
       status: 'in progress',
       completedAt: null,
       courseLessons,
@@ -284,9 +289,16 @@ export const generateQuiz = async (userId: string, courseId: string) => {
   
   // Generate quiz using your existing AI function
   const generatedQuiz = await llmService.generateQuiz(courseId);
-  console.log(generatedQuiz)
   const quizData = JSON.parse(generatedQuiz);
-  console.log(quizData)
+  console.log("quiz generated")
+
+  const courseData = await CourseService.getCourseById(courseId);
+
+  if (!courseData) throw new Error('Course not found');
+
+  const quizTitle = courseData.title;
+
+  console.log("quizTitle", quizTitle)
 
   // Initialize exercises with 'incomplete' status
   const exercises = quizData.quiz.map((exercise: any) => ({
@@ -302,6 +314,7 @@ export const generateQuiz = async (userId: string, courseId: string) => {
 
   // Create the new quiz
   const quiz = {
+    title: quizTitle,
     exercises,
     score: null,
     completedAt: null,
