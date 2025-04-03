@@ -2,7 +2,6 @@ import User, { IUser, ILesson, ITask, ICourse } from '../models/userModel';
 import CourseService from './courseService';
 import { getLessonById } from './lessonService';
 import { getTaskById } from './taskService';
-import LLMService from '../llm/llmService';
 
 export const createUser = async (userData: IUser) => {
   // Check if a user with the given userId already exists
@@ -282,48 +281,56 @@ export const completeCourse = async (userId: string, courseId: string) => {
   await user.save();
 };
 
-export const generateQuiz = async (userId: string, courseId: string) => {
-  const user = await User.findOne({ userId });
-  if (!user) throw new Error('User not found');
-  const llmService = new LLMService();
+// export const generateQuiz = async (courseId: string) => {
+//   // const user = await User.findOne({ userId });
+//   // if (!user) throw new Error('User not found');
+
+//   const courseData = await CourseService.getCourseById(courseId);
+
+//   if (!courseData) throw new Error('Course not found');
+
+//   console.log(courseData);
   
-  // Generate quiz using your existing AI function
-  const generatedQuiz = await llmService.generateQuiz(courseId);
-  const quizData = JSON.parse(generatedQuiz);
-  console.log("quiz generated")
+//   // Generate quiz using your existing AI function
+//   const generatedQuiz = await llmService.generateQuiz(courseId);
+//   const quizData = JSON.parse(generatedQuiz);
+//   console.log("quiz generated")
 
-  const courseData = await CourseService.getCourseById(courseId);
+//   // const courseData = await CourseService.getCourseById(courseId);
 
-  if (!courseData) throw new Error('Course not found');
+//   // if (!courseData) throw new Error('Course not found');
 
-  const quizTitle = courseData.title;
+//   // console.log(courseData);
 
-  console.log("quizTitle", quizTitle)
+//   const quizTitle = courseData.title;
 
-  // Initialize exercises with 'incomplete' status
-  const exercises = quizData.quiz.map((exercise: any) => ({
-    status: 'incomplete',
-    description: exercise.description,
-    type: exercise.type,
-    words: exercise.words,
-    videoUrls: exercise.videoUrls,
-    correctAnswer: exercise.correctAnswer,
-    userChoice: null,
-    xpValue: exercise.xpValue,
-  }));
+//   console.log("quizTitle", quizTitle)
 
-  // Create the new quiz
-  const quiz = {
-    title: quizTitle,
-    exercises,
-    score: null,
-    completedAt: null,
-  };
+//   // Initialize exercises with 'incomplete' status
+//   const exercises = quizData.quiz.map((exercise: any) => ({
+//     status: 'incomplete',
+//     description: exercise.description,
+//     type: exercise.type,
+//     words: exercise.words,
+//     videoUrls: exercise.videoUrls,
+//     correctAnswer: exercise.correctAnswer,
+//     userChoice: null,
+//     xpValue: exercise.xpValue,
+//   }));
 
-  // Add the quiz to the user's quizzes
-  user.userQuizzes.push(quiz);
-  await user.save();
-};
+//   // Create the new quiz
+//   const quiz = {
+//     title: quizTitle,
+//     exercises,
+//     score: null,
+//     completedAt: null,
+//   };
+
+//   // Add the quiz to the user's quizzes
+//   courseData.quiz.push(quiz);
+//   await courseData.save();
+//   console.log("Finished");
+// };
 
 export const getUserQuizzes = async (userId: string) => {
   const user = await User.findOne({ userId }).select('userQuizzes');

@@ -129,16 +129,16 @@ export const completeLessonController = async (req: Request, res: Response) => {
   }
 };
 
-export const generateQuizController = async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.params;
-    const { courseId } = req.body;
-    await userService.generateQuiz(userId, courseId);
-    res.status(201).json({ message: 'Quiz generated successfully' });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-};
+// export const generateQuizController = async (req: Request, res: Response) => {
+//   try {
+//     const { courseId } = req.body;
+//     console.log
+//     await userService.generateQuiz(courseId);
+//     res.status(201).json({ message: 'Quiz generated successfully' });
+//   } catch (error: any) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 export const getQuizzesByUserController = async (req: Request, res: Response) => {
   try {
