@@ -1,5 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 
+export type UserRole = 'admin' | 'teacher' | 'student';
+export type Status = 'incomplete' | 'pass' | 'fail';
+
 export interface ITask extends Document {
   taskId: string;
   status: string; // e.g., 'complete', 'incomplete';
@@ -20,9 +23,11 @@ export interface ICourse extends Document {
   status: string; // e.g., 'complete', 'incomplete'
   completedAt: Date;
   courseLessons: ILesson[];
+  courseQuiz: IQuiz;
 }
 
 export interface IQuiz extends Document {
+  quizId: string;
   title: string;
   exercises: IExercise[];
   score: number;
@@ -30,37 +35,28 @@ export interface IQuiz extends Document {
 }
 
 export interface IExercise extends Document {
-    status: string;
-    description: string;
-    type: string;
-    words: string[];
-    videoUrls: string[];
-    correctAnswer: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string };
+    status: Status;
     userChoice: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string };
     xpValue: number;
 }
 
 export interface IUser extends Document {
   userId: string;
+  role: UserRole;
   totalXp: number;
   streakCount: number;
   lastActiveDay: Date;
   userCourses: ICourse[];
-  userQuizzes: IQuiz[];
 }
 
 const exerciseSchema = new Schema<IExercise>({
-  status: { type: String, default: 'incomplete' },
-  description: { type: String, required: true },
-  type: { type: String, required: true },
-  words: { type: [String], default: [] },
-  videoUrls: { type: [String], default: [] },
-  correctAnswer: { type: Schema.Types.Mixed, required: true }, // Supports both string and array
+  status: { type: String, enum: ['incomplete', 'pass', 'fail'],  default: 'incomplete' },
   userChoice: { type: Schema.Types.Mixed },
   xpValue: { type: Number, required: true },
 });
 
 const quizSchema = new Schema<IQuiz>({
+    quizId: { type: String},
     title: { type: String, required: true },
     exercises: [exerciseSchema],
     score: { type: Number },
@@ -69,7 +65,7 @@ const quizSchema = new Schema<IQuiz>({
 
 const taskSchema = new Schema<ITask>({
   taskId: { type: String, ref: "Task", required: true },
-  status: { type: String, default: "incomplete" },
+  status: { type: String, enum: ['incomplete', 'complete'], default: "incomplete" },
   videoUrl: { type: String, required: false },
   completedAt: Date,
 });
@@ -80,7 +76,7 @@ const lessonSchema = new Schema<ILesson>({
     ref: "Lesson",
     required: true,
   },
-  status: { type: String, default: "incomplete" },
+  status: { type: String, enum: ['incomplete', 'in progress', 'complete'], default: "incomplete" },
   completedAt: Date,
   lessonTasks: [taskSchema],
 });
@@ -95,17 +91,18 @@ const courseSchema = new Schema<ICourse>({
   status: { type: String, default: "incomplete" },
   completedAt: Date,
   courseLessons: [lessonSchema],
+  courseQuiz: quizSchema
 });
 
 const futureDate = new Date('9999-12-31');
 
 const userSchema = new Schema<IUser>({
   userId: { type: String, required: true },
+  role: { type: String, enum: ['admin', 'teacher', 'student'], default: 'student' },
   totalXp: { type: Number, default: 0 },
   streakCount: { type: Number, default: 0 },
   lastActiveDay: { type: Date, default: futureDate },
-  userCourses: { type: [courseSchema], default: [] },
-  userQuizzes: { type: [quizSchema], default: [] },
+  userCourses: { type: [courseSchema], default: [] }
 });
 
 const User = mongoose.models.User || mongoose.model<IUser>("User", userSchema);
