@@ -7,6 +7,7 @@ import taskRouter from "./routes/taskRoutes";
 import userRouter from "./routes/userRoutes";
 import cors from 'cors';
 import bodyParser from 'body-parser';
+console.log("Starting server...");
 
 dotenv.config();
 
