@@ -127,13 +127,31 @@ export const startCourse = async (userId: string, courseId: string) => {
       completedAt: null,
     }));
 
-    course = {
-      courseId,
-      courseTitle,
-      status: 'in progress',
-      completedAt: null,
-      courseLessons,
-    };
+    const originalQuiz = courseData.quiz?.[0];
+
+    const courseQuiz = originalQuiz
+      ? {
+          quizId: originalQuiz._id.toString(),
+          title: originalQuiz.title,
+          score: 0,
+          completedAt: null,
+          exercises: originalQuiz.exercises.map((exer) => ({
+            status: 'incomplete',
+            userChoice: null,
+            xpValue: exer.xpValue,
+            exerciseId: exer._id.toString(),
+          })),
+        }
+      : null;
+
+      course = {
+        courseId,
+        courseTitle,
+        status: 'in progress',
+        completedAt: null,
+        courseLessons,
+        courseQuiz,
+      };
     
     user.userCourses.push(course);
   }
@@ -175,7 +193,7 @@ const updateStreak = async (user: any) => {
   await user.save();
 };
 
-export const startTask = async (userId: string, courseId: string, lessonId: string, taskId: string) => {
+export const completeTask = async (userId: string, courseId: string, lessonId: string, taskId: string, status: string) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
 
@@ -188,34 +206,17 @@ export const startTask = async (userId: string, courseId: string, lessonId: stri
   const task = lesson.lessonTasks.find((task) => task.taskId === taskId);
   if (!task) throw new Error('Task not found');
 
-  if (task.status === 'complete') {
-    return;
-  }
-
-  task.status = 'in progress';
-  await user.save();
-};
-
-export const completeTask = async (userId: string, courseId: string, lessonId: string, taskId: string) => {
-  const user = await User.findOne({ userId });
-  if (!user) throw new Error('User not found');
-
-  const course = user.userCourses.find((course) => course.courseId === courseId);
-  if (!course) throw new Error('Course not found');
-
-  const lesson = course.courseLessons.find((lesson) => lesson.lessonId === lessonId);
-  if (!lesson) throw new Error('Lesson not found');
-
-  const task = lesson.lessonTasks.find((task) => task.taskId === taskId);
-  if (!task) throw new Error('Task not found');
-
-  if (task.status !== 'complete') {
+  if (task.status !== 'complete' && status === 'pass') {
+    task.status = 'pass';
+    task.completedAt = new Date();
     const taskData = await getTaskById(courseId, lessonId, taskId);
     user.totalXp += taskData.xpValue;
+  } else if (task.status !== 'complete' && status === 'fail') {
+    task.status = 'fail';
   }
-
-  task.status = 'complete';
-  task.completedAt = new Date();
+  else if (task.status === 'pass') {
+    throw new Error('Task already passed');
+  }
 
   await updateStreak(user);
 
@@ -264,63 +265,52 @@ export const completeCourse = async (userId: string, courseId: string) => {
 };
 
 export const getUserQuizzes = async (userId: string) => {
-  const user = await User.findOne({ userId }).select('userQuizzes');
-  return user?.userQuizzes || [];
+  const user = await User.findOne({ userId });
+  if (!user) return [];
+
+  const quizzes = user.userCourses
+    .map((course: any) => course.courseQuiz) 
+    .filter((quiz) => quiz !== null); 
+
+  return quizzes;
 };
 
-export const getQuizById = async (userId: string, quizId: string) => {
+export const getUserQuizzesByCourseId = async (userId: string, courseId: string) => {
+  const user = await User.findOne({ userId });
+
+  if (!user) return null;
+
+  const course = user.userCourses.find((c: any) => c.courseId === courseId);
+
+  return course?.courseQuiz || null;
+};
+
+export const completeExercise = async (userId: string, courseId, quizId: string, exerciseId: string, status) => {
+  
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
 
-  const quiz = user.userQuizzes.id(quizId);
+  const userCourse = user.userCourses.find(course => course.courseId === courseId);
+  if (!userCourse) throw new Error('User course not found');
+
+  const quiz = userCourse.courseQuiz.find(quiz => quiz.quizId === quizId);
   if (!quiz) throw new Error('Quiz not found');
 
-  return quiz.exercises;
-};
-
-export const startExercise = async (userId: string, quizId: string, exerciseId: string) => {
-  const user = await User.findOne({ userId });
-  if (!user) throw new Error('User not found');
-
-  const quiz = user.userQuizzes.id(quizId);
-  if (!quiz) throw new Error('Quiz not found');
-
-  const exercise = quiz.exercises.id(exerciseId);
+  const exercise = quiz.exercises.find(ex => ex._id.toString() === exerciseId);
   if (!exercise) throw new Error('Exercise not found');
 
   if (exercise.status === 'pass') throw new Error('Exercise already completed');
-  exercise.status = 'in progress';
 
-  await user.save();
-};
-
-export const completeExercise = async (userId: string, quizId: string, exerciseId: string, userChoice: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string }) => {
-  const user = await User.findOne({ userId });
-  if (!user) throw new Error('User not found');
-
-  const quiz = user.userQuizzes.id(quizId);
-  if (!quiz) throw new Error('Quiz not found');
-
-  const exercise = quiz.exercises.id(exerciseId);
-  if (!exercise) throw new Error('Exercise not found');
-
-  const correctAnswer = exercise.correctAnswer;
-
-  if (exercise.status === 'pass') throw new Error('Exercise already completed');
-
-  if (correctAnswer === userChoice) {
-    if (exercise.status !== 'pass') {
-      exercise.status = 'pass';
-      user.totalXp += exercise.xpValue;
-    }
-  } else {
+  if (exercise.status !== 'complete' && status === 'pass') {
+    exercise.status = 'pass';
+    exercise.completedAt = new Date();
+    user.totalXp += exercise.xpValue;
+  } else if (exercise.status !== 'complete' && status === 'fail') {
     exercise.status = 'fail';
   }
-
-  await updateStreak(user);
-  exercise.completedAt = new Date();
-  exercise.userChoice = userChoice;
-  await user.save();
+  else if (exercise.status === 'pass') {
+    throw new Error('exercise already passed');
+  }
   
   const allExercisesCompleted = quiz.exercises.every((ex) => ex.status === 'pass' || ex.status === 'fail');
   if (allExercisesCompleted) {

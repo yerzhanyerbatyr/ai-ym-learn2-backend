@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export type UserRole = 'admin' | 'teacher' | 'student';
-export type Status = 'incomplete' | 'pass' | 'fail';
+export type Status = 'incomplete' | 'in progress' | 'pass' | 'fail';
 
 export interface ITask extends Document {
   taskId: string;
@@ -37,6 +37,7 @@ export interface IQuiz extends Document {
 export interface IExercise extends Document {
     status: Status;
     userChoice: string | Array<{ word: string; videoUrl: string }> | { word: string; videoUrl: string };
+    exerciseId: string;
     xpValue: number;
 }
 
@@ -53,6 +54,7 @@ const exerciseSchema = new Schema<IExercise>({
   status: { type: String, enum: ['incomplete', 'pass', 'fail'],  default: 'incomplete' },
   userChoice: { type: Schema.Types.Mixed },
   xpValue: { type: Number, required: true },
+  exerciseId: { type: String, required: true },
 });
 
 const quizSchema = new Schema<IQuiz>({
@@ -65,7 +67,7 @@ const quizSchema = new Schema<IQuiz>({
 
 const taskSchema = new Schema<ITask>({
   taskId: { type: String, ref: "Task", required: true },
-  status: { type: String, enum: ['incomplete', 'complete'], default: "incomplete" },
+  status: { type: String, enum: ['incomplete', 'pass', 'fail'], default: "incomplete" },
   videoUrl: { type: String, required: false },
   completedAt: Date,
 });

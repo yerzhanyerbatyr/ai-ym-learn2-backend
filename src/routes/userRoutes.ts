@@ -18,13 +18,10 @@ userRouter.put('/:userId/course/:courseId/start', userController.startCourseCont
 
 userRouter.put('/:userId/course/:courseId/lesson/:lessonId/complete', userController.completeLessonController);
 
-userRouter.put('/:userId/course/:courseId/lesson/:lessonId/task/:taskId/start', userController.startTaskController);
-userRouter.put('/:userId/course/:courseId/lesson/:lessonId/task/:taskId/complete', userController.completeTaskController);
+userRouter.put('/task/complete', userController.completeTaskController);
 
 userRouter.get('/:userId/quizzes', userController.getQuizzesByUserController);
 userRouter.get('/:userId/quiz/:quizId', userController.getQuizByIdController);
-userRouter.put('/:userId/quiz/:quizId/exercise/:exerciseId/start', userController.startExerciseController);
-userRouter.put('/:userId/quiz/:quizId/exercise/:exerciseId/complete', userController.completeExerciseController);
-userRouter.put('/:userId/quiz/:quizId/complete', userController.completeQuizController);
+userRouter.put('/exercise/complete', userController.completeExerciseController);
 
 export default userRouter;

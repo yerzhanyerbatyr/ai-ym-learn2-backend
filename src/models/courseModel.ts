@@ -28,6 +28,7 @@ export interface ILesson extends Document {
   lessonNumber: number;
   title: string;
   tasks: ITask[];
+  difficultyLevel: string;
 }
 
 export interface ICourse extends Document {
@@ -68,6 +69,7 @@ const lessonSchema = new Schema<ILesson>({
   lessonNumber: { type: Number, required: true },
   title: { type: String, required: true },
   tasks: { type: [taskSchema], default: [] },
+  difficultyLevel: { type: String, enum: ['easy', 'medium', 'hard'], required: true },
 });
 
 const courseSchema = new Schema<ICourse>({
