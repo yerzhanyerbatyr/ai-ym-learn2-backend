@@ -6,7 +6,7 @@ export interface ITeacherAttributes extends Document {
   motivation: string;
   coursePlan: string; 
   coursesToCreate: string[];
-  status: "pending" | "approved" | null; 
+  status: "pending" | "approved" | "rejected" ; 
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -16,7 +16,7 @@ const teacherAttributesSchema = new Schema<ITeacherAttributes>(
     userId: {
       type: String,
       required: true,
-      unique: true,
+      unique: false,
     },
     certificates: {
       type: [String],
@@ -36,8 +36,7 @@ const teacherAttributesSchema = new Schema<ITeacherAttributes>(
     },
     status: {
       type: String,
-      enum: ["pending", "approved", null],
-      default: null,  // Initially set to null or pending if needed
+      enum: ["pending", "approved", "rejected"]
     },
   },
   {

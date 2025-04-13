@@ -7,10 +7,17 @@ export const sendRequestService = async ({ userId, motivation, coursePlan, certi
     throw new Error("Only students can send teacher requests.");
   }
 
-  const existing = await TeacherAttributes.findOne({ userId });
-  if (existing) {
-    if (existing.status === 'pending') throw new Error("Request already pending.");
-    if (existing.status === 'approved') throw new Error("Already a teacher.");
+  const previousRequests = await TeacherAttributes.find({ userId });
+
+  const hasPending = previousRequests.some(req => req.status === 'pending');
+  const isAlreadyTeacher = user.role === 'teacher' || previousRequests.some(req => req.status === 'approved');
+
+  if (hasPending) {
+    throw new Error("Request already pending.");
+  }
+
+  if (isAlreadyTeacher) {
+    throw new Error("Already a teacher.");
   }
 
   const newRequest = await TeacherAttributes.create({
@@ -53,6 +60,7 @@ export const rejectRequestService = async (requestId) => {
     throw new Error("Request not found or already processed.");
   }
 
-  await TeacherAttributes.deleteOne({ _id: request._id });
+  request.status = 'rejected';
+  await request.save();
   return true;
 };
