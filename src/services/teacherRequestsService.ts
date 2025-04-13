@@ -1,0 +1,58 @@
+import TeacherAttributes from "../models/teacherAttributesModel";
+import User from "../models/userModel";
+
+export const sendRequestService = async ({ userId, motivation, coursePlan, certificates }) => {
+  const user = await User.findOne({ userId: userId });
+  if (!user || user.role !== 'student') {
+    throw new Error("Only students can send teacher requests.");
+  }
+
+  const existing = await TeacherAttributes.findOne({ userId });
+  if (existing) {
+    if (existing.status === 'pending') throw new Error("Request already pending.");
+    if (existing.status === 'approved') throw new Error("Already a teacher.");
+  }
+
+  const newRequest = await TeacherAttributes.create({
+    userId,
+    motivation,
+    coursePlan,
+    certificates,
+    coursesToCreate: [],
+    status: 'pending',
+  });
+
+  return newRequest;
+};
+
+export const getPendingRequestsService = async () => {
+  return TeacherAttributes.find({ status: 'pending' }).populate("userId");
+};
+
+export const approveRequestService = async (requestId) => {
+  const request = await TeacherAttributes.findById(requestId);
+  if (!request || request.status !== 'pending') {
+    throw new Error("Request not found or already processed.");
+  }
+
+  const user = await User.findOne({userId: request.userId});
+  if (!user) throw new Error("User not found.");
+
+  user.role = 'teacher';
+  await user.save();
+
+  request.status = 'approved';
+  await request.save();
+
+  return request;
+};
+
+export const rejectRequestService = async (requestId) => {
+  const request = await TeacherAttributes.findById(requestId);
+  if (!request || request.status !== 'pending') {
+    throw new Error("Request not found or already processed.");
+  }
+
+  await TeacherAttributes.deleteOne({ _id: request._id });
+  return true;
+};
