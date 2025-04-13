@@ -59,6 +59,14 @@ class courseController {
       res.status(500).json({ error: "Failed to retrieve vocabulary list" });
     }
   }
+  async getCoursesByUserId(req: Request, res: Response) {
+    try {
+      const courses = await CourseService.getCoursesByUserId(req.params.userId);
+      res.status(200).json(courses);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to retrieve courses" });
+    }
+  }
 }
 
 export default new courseController();

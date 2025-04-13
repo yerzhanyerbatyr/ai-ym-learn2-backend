@@ -9,5 +9,6 @@ router.get("/:id", CourseController.getCourseById);
 router.put("/:id", CourseController.updateCourse);
 router.delete("/:id", CourseController.deleteCourse);
 router.get("/:id/vocabulary", CourseController.getVocabularyList);
+router.get("/creator/:userId", CourseController.getCoursesByUserId);
 
 export default router;

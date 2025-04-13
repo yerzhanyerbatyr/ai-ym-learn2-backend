@@ -35,6 +35,9 @@ class CourseService {
     );
     return vocabularyList;
   }
+  async getCoursesByUserId(userId: string) {
+    return await Course.find({ createdBy: userId });
+  }
 }
 
 export default new CourseService();

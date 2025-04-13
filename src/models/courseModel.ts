@@ -40,6 +40,7 @@ export interface ICourse extends Document {
   createdAt: Date;
   updatedAt: Date;
   isPublished: boolean;
+  category: string;
 }
 
 const exerciseSchema = new Schema<IExercise>({
@@ -81,7 +82,8 @@ const courseSchema = new Schema<ICourse>({
   createdBy: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  isPublished: { type: Boolean, default: false }
+  isPublished: { type: Boolean, default: false },
+  category: { type: String },
 },
 {
   timestamps: true
