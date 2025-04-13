@@ -285,7 +285,7 @@ export const getUserQuizzesByCourseId = async (userId: string, courseId: string)
   return course?.courseQuiz || null;
 };
 
-export const completeExercise = async (userId: string, courseId, quizId: string, exerciseId: string, status) => {
+export const completeExercise = async (userId: string, courseId, quizId: string, exerciseId: string, userChoice, status) => {
   
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
@@ -293,10 +293,10 @@ export const completeExercise = async (userId: string, courseId, quizId: string,
   const userCourse = user.userCourses.find(course => course.courseId === courseId);
   if (!userCourse) throw new Error('User course not found');
 
-  const quiz = userCourse.courseQuiz.find(quiz => quiz.quizId === quizId);
+  const quiz = userCourse.courseQuiz;
   if (!quiz) throw new Error('Quiz not found');
 
-  const exercise = quiz.exercises.find(ex => ex._id.toString() === exerciseId);
+  const exercise = quiz.exercises.find(ex => ex.exerciseId.toString() === exerciseId);
   if (!exercise) throw new Error('Exercise not found');
 
   if (exercise.status === 'pass') throw new Error('Exercise already completed');
@@ -304,31 +304,36 @@ export const completeExercise = async (userId: string, courseId, quizId: string,
   if (exercise.status !== 'complete' && status === 'pass') {
     exercise.status = 'pass';
     exercise.completedAt = new Date();
+    exercise.userChoice = userChoice;
     user.totalXp += exercise.xpValue;
   } else if (exercise.status !== 'complete' && status === 'fail') {
     exercise.status = 'fail';
+    exercise.userChoice = userChoice;
   }
   else if (exercise.status === 'pass') {
     throw new Error('exercise already passed');
   }
   
   const allExercisesCompleted = quiz.exercises.every((ex) => ex.status === 'pass' || ex.status === 'fail');
+  console.log("allExercisesCompleted", allExercisesCompleted)
   if (allExercisesCompleted) {
-    await completeQuiz(userId, quizId);
+    await completeQuiz(userId, quizId, courseId);
   }
+
+  await updateStreak(user);
 
   await user.save();
 };
 
-export const completeQuiz = async (userId: string, quizId: string) => {
+export const completeQuiz = async (userId: string, quizId: string, courseId) => {
   const user = await User.findOne({ userId });
   if (!user) throw new Error('User not found');
 
-  const quiz = user.userQuizzes.id(quizId);
-  if (!quiz) throw new Error('Quiz not found');
+  const userCourse = user.userCourses.find(course => course.courseId === courseId);
+  if (!userCourse) throw new Error('User course not found');
 
-  const allCompleted = quiz.exercises.every((exercise) => exercise.status === 'pass' || exercise.status === 'fail');
-  if (!allCompleted) throw new Error('Not all exercises are completed');
+  const quiz = userCourse.courseQuiz;
+  if (!quiz) throw new Error('Quiz not found');
 
   const totalXpValue = quiz.exercises.reduce((sum, exercise) => sum + exercise.xpValue, 0);
   const passedXpValue = quiz.exercises

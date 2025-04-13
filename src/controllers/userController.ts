@@ -141,19 +141,9 @@ export const getQuizByIdController = async (req: Request, res: Response) => {
 
 export const completeExerciseController = async (req: Request, res: Response) => {
   try {
-    const { userId, courseId, quizId, exerciseId, status } = req.body;
-    await userService.completeExercise(userId, courseId, quizId, exerciseId, status);
+    const { userId, courseId, quizId, exerciseId, userChoice, status } = req.body;
+    await userService.completeExercise(userId, courseId, quizId, exerciseId, userChoice, status);
     res.status(200).json({ message: 'Exercise completed successfully' });
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-export const completeQuizController = async (req: Request, res: Response) => {
-  try {
-    const { userId, quizId } = req.params;
-    await userService.completeQuiz(userId, quizId);
-    res.status(200).json({ message: 'Quiz completed successfully' });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
