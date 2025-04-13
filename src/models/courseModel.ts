@@ -35,6 +35,9 @@ export interface ICourse extends Document {
   description: string;
   lessons: ILesson[];
   quiz: IQuiz[];
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 const exerciseSchema = new Schema<IExercise>({
@@ -72,6 +75,9 @@ const courseSchema = new Schema<ICourse>({
   description: { type: String },
   lessons: { type: [lessonSchema], default: [] },
   quiz: { type: [quizSchema], default: [] },
+  createdBy: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
 const Course =
