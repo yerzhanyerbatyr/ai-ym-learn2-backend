@@ -42,6 +42,7 @@ export interface ICourse extends Document {
   isPublished: boolean;
   category: string;
   languageProficiency: "beginner" | "pre-intermediate" | "intermediate" | "upper-intermediate" | "advanced" | "native";
+  isSignLanguageCourse: boolean;
 }
 
 const exerciseSchema = new Schema<IExercise>({
@@ -96,7 +97,8 @@ const courseSchema = new Schema<ICourse>({
       "native"
     ],
     required: true
-  }
+  },
+  isSignLanguageCourse: { type: Boolean, default: true },
 },
 {
   timestamps: true
