@@ -19,11 +19,11 @@ export interface ILesson extends Document {
 
 export interface ICourse extends Document {
   courseId: string;
-  courseTitle: string;
+  courseTitle: string | null;
   status: string; // e.g., 'complete', 'incomplete'
-  completedAt: Date;
-  courseLessons: ILesson[];
-  courseQuiz: IQuiz;
+  completedAt: Date | null;
+  courseLessons: ILesson[] | null;
+  courseQuiz: IQuiz | null;
 }
 
 export interface IQuiz extends Document {
@@ -89,9 +89,9 @@ const courseSchema = new Schema<ICourse>({
     ref: "Course",
     required: true,
   },
-  courseTitle: { type: String, required: true },
+  courseTitle: { type: String, required: false },
   status: { type: String, default: "incomplete" },
-  completedAt: Date,
+  completedAt: Date || null,
   courseLessons: [lessonSchema],
   courseQuiz: quizSchema
 });

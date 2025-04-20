@@ -59,6 +59,16 @@ export const getUserCourses = async (req: Request, res: Response) => {
   }
 };
 
+export const enrollInCourse = async (req: Request, res: Response) => {
+  try {
+    const { userId, courseId } = req.params;
+    await userService.enrollInCourse(userId, courseId);
+    res.status(200).json({ message: 'User enrolled in course successfully' });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+};
+
 export const getUserCompletedLessonIds = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;

@@ -14,6 +14,7 @@ userRouter.get('/:userId/user-in-progress-lesson-id', userController.getInProgre
 
 userRouter.get('/:userId/lessons/:lessonId/tasks', userController.getLessonTasks);
 
+userRouter.post('/:userId/course/:courseId/add', userController.enrollInCourse);
 userRouter.put('/:userId/course/:courseId/start', userController.startCourseController);
 
 userRouter.put('/:userId/course/:courseId/lesson/:lessonId/complete', userController.completeLessonController);
