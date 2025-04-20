@@ -41,6 +41,7 @@ export interface ICourse extends Document {
   updatedAt: Date;
   isPublished: boolean;
   category: string;
+  languageProficiency: "beginner" | "pre-intermediate" | "intermediate" | "upper-intermediate" | "advanced" | "native";
 }
 
 const exerciseSchema = new Schema<IExercise>({
@@ -84,6 +85,18 @@ const courseSchema = new Schema<ICourse>({
   updatedAt: { type: Date, default: Date.now },
   isPublished: { type: Boolean, default: false },
   category: { type: String },
+  languageProficiency: {
+    type: String,
+    enum: [
+      "beginner",
+      "pre-intermediate",
+      "intermediate",
+      "upper-intermediate",
+      "advanced",
+      "native"
+    ],
+    required: true
+  }
 },
 {
   timestamps: true
