@@ -147,7 +147,7 @@ export const startCourse = async (userId: string, courseId: string) => {
 
     const nextLesson = course.courseLessons.find((lesson, index, lessons) =>
       lesson.status === 'incomplete' &&
-      (index === 0 || lessons[index - 1].status === 'complete')
+      (index === 0 || lessons[index - 1].status === 'pass' || lessons[index - 1].status === 'fail')
     );
 
     if (!nextLesson) throw new Error('No more lessons to start in this course');
