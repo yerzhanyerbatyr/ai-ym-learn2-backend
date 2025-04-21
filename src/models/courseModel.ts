@@ -11,6 +11,8 @@ export interface IExercise extends Document {
 
 export interface IQuiz extends Document {
   title: string;
+  description: string;
+  category: string;
   exercises: IExercise[];
 }
 
@@ -51,12 +53,14 @@ const exerciseSchema = new Schema<IExercise>({
   words: { type: [String], default: [] },
   videoUrls: { type: [String], default: [] },
   correctAnswer: { type: Schema.Types.Mixed, required: true }, // Supports both string and array
-  xpValue: { type: Number, required: true },
+  xpValue: { type: Number, required: true, default: 10 },
 });
 
 const quizSchema = new Schema<IQuiz>({
     title: { type: String, required: true },
-    exercises: [exerciseSchema]
+    description: { type: String, required: true },
+    category: { type: String, required: true },
+    exercises: { type: [exerciseSchema], default: [] },
 });
 
 const taskSchema = new Schema<ITask>({
@@ -96,7 +100,8 @@ const courseSchema = new Schema<ICourse>({
       "advanced",
       "native"
     ],
-    required: true
+    required: true,
+    default: "beginner"
   },
   isSignLanguageCourse: { type: Boolean, default: true },
 },

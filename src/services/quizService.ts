@@ -26,7 +26,7 @@ export const updateQuiz = async (
   if (!course) throw new Error("Course not found");
 
   const quiz = course.quiz.id(quizId);
-  if (!quiz) throw new Error("Lesson not found");
+  if (!quiz) throw new Error("Quiz not found");
 
   quiz.set(quizData);
   await course.save();
@@ -38,7 +38,7 @@ export const deleteQuiz = async (courseId: string, quizId: string) => {
   if (!course) throw new Error("Course not found");
 
   const quiz = course.quiz.id(quizId);
-  if (!quiz) throw new Error("Lesson not found");
+  if (!quiz) throw new Error("Quiz not found");
 
   quiz.remove();
   await course.save();

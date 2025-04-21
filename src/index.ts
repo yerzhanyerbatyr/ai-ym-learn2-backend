@@ -7,6 +7,7 @@ import taskRouter from "./routes/taskRoutes";
 import userRouter from "./routes/userRoutes";
 import teacherRequestRouter from "./routes/teacherRequestsRoutes";
 import quizRouter from "./routes/quizRoutes";
+import exerciseRouter from "./routes/exerciseRoutes";
 import cors from 'cors';
 import bodyParser from 'body-parser';
 console.log("Starting server...");
@@ -34,6 +35,7 @@ app.use("/api/teacherRequest", teacherRequestRouter);
 app.use("/api/course/:courseId/lesson", lessonRouter);
 app.use("/api/course/:courseId/lesson/:lessonId/task", taskRouter);
 app.use("/api/course/:courseId/quiz", quizRouter);
+app.use("/api/course/:courseId/quiz/:quizId/exercise", exerciseRouter);
 
 app.use("/api/user", userRouter);
 
