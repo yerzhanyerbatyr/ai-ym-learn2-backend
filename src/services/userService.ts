@@ -242,7 +242,7 @@ export const completeLesson = async (userId: string, courseId: string, lessonId:
   const lesson = course.courseLessons.find((lesson) => lesson.lessonId === lessonId);
   if (!lesson) throw new Error('Lesson not found');
 
-  const allTasksComplete = lesson.lessonTasks.every((task) => task.status === 'complete');
+  const allTasksComplete = lesson.lessonTasks.every((task) => task.status === 'pass' || task.status === 'fail');
   if (!allTasksComplete) throw new Error('Not all tasks are complete');
 
   lesson.status = 'complete';
