@@ -262,10 +262,10 @@ export const completeLesson = async (userId: string, courseId: string, lessonId:
   const lastLesson = course.courseLessons[course.courseLessons.length - 1];
   if (lastLesson.lessonId === lessonId) {
     console.log("Last lesson completed, marking the course as complete");
+    await user.save();
     await completeCourse(userId, courseId);
   }
-
-  await user.save();
+  
 };
 
 export const completeCourse = async (userId: string, courseId: string) => {
