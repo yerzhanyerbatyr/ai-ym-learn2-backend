@@ -102,8 +102,13 @@ export const getLessonTasks = async (req: Request, res: Response) => {
 export const startCourseController = async (req: Request, res: Response) => {
   try {
     const { userId, courseId } = req.params;
-    await userService.startCourse(userId, courseId);
-    res.status(200).json({ message: 'Course started successfully' });
+    const lesson_data = await userService.startCourse(userId, courseId);
+    const firstIncompleteTask = lesson_data.lessonTasks.find(task => task.status === 'incomplete');
+
+    res.status(200).json({
+      lessonId: lesson_data.lessonId,
+      taskId: firstIncompleteTask.taskId,
+    });
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
   }

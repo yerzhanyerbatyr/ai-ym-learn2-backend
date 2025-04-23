@@ -94,6 +94,7 @@ export const startCourse = async (userId: string, courseId: string) => {
   if (!course) throw new Error('User is not enrolled in this course');
 
   const isUninitialized = !course.courseLessons || !course.courseLessons.length;
+  console.log("isUninitialized", isUninitialized)
 
   if (isUninitialized) {
     const courseData = await CourseService.getCourseById(courseId);
@@ -141,13 +142,20 @@ export const startCourse = async (userId: string, courseId: string) => {
     course.courseLessons = courseLessons;
     course.courseQuiz = courseQuiz;
 
+    await user.save();
+    return firstLesson
+
   } else {
     const inProgressLesson = course.courseLessons.find((lesson) => lesson.status === 'in progress');
-    if (inProgressLesson) return;
+    console.log("inProgressLesson", inProgressLesson)
+    if (inProgressLesson) {
+      const res = inProgressLesson;
+      return res
+    }
 
     const nextLesson = course.courseLessons.find((lesson, index, lessons) =>
       lesson.status === 'incomplete' &&
-      (index === 0 || lessons[index - 1].status === 'pass' || lessons[index - 1].status === 'fail')
+      (index === 0 || lessons[index - 1].status === 'complete')
     );
 
     if (!nextLesson) throw new Error('No more lessons to start in this course');
@@ -157,15 +165,18 @@ export const startCourse = async (userId: string, courseId: string) => {
     const lesson = await getLessonById(courseId, nextLesson.lessonId);
     const fetchedTasks = lesson.tasks;
 
+    console.log("fetchedTasks", fetchedTasks)
+
     nextLesson.lessonTasks = fetchedTasks.map((task) => ({
       taskId: task._id.toString(),
       status: 'incomplete',
       videoUrl: null,
       completedAt: null,
     }));
-  }
 
-  await user.save();
+    await user.save();
+    return nextLesson;
+  }
 };
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
