@@ -264,8 +264,11 @@ export const completeLesson = async (userId: string, courseId: string, lessonId:
     console.log("Last lesson completed, marking the course as complete");
     await user.save();
     await completeCourse(userId, courseId);
+    return;
   }
   
+  await user.save();
+
 };
 
 export const completeCourse = async (userId: string, courseId: string) => {
