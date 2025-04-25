@@ -72,7 +72,7 @@ const taskSchema = new Schema<ITask>({
   videoUrl: { type: String, required: true },
   xpValue: { type: Number, required: true },
   duration: { type: Number, required: true },
-  referenceId: { type: String, required: true },
+  referenceId: { type: String, required: false },
 });
 
 const lessonSchema = new Schema<ILesson>({
