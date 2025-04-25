@@ -1,7 +1,7 @@
 import TeacherAttributes from "../models/teacherAttributesModel";
 import User from "../models/userModel";
 
-export const sendRequestService = async ({ userId, motivation, coursePlan, certificates, cv, teachingExperience, signingDuration, signingDurationDescription }) => {
+export const sendRequestService = async ({ userId,fullName, motivation, coursePlan, certificates, cv, teachingExperience, signingDuration, signingDurationDescription }) => {
   const user = await User.findOne({ userId: userId });
   if (!user || user.role !== 'student') {
     throw new Error("Only students can send teacher requests.");
@@ -22,6 +22,7 @@ export const sendRequestService = async ({ userId, motivation, coursePlan, certi
 
   const newRequest = await TeacherAttributes.create({
     userId,
+    fullName,
     motivation,
     coursePlan,
     certificates,

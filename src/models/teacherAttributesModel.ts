@@ -4,6 +4,7 @@ export interface ITeacherAttributes extends Document {
   userId: string; 
   certificates: string[];
   cv: string;
+  fullName: string;
   motivation: string;
   coursePlan: string; 
   coursesToCreate: string[];
@@ -44,7 +45,7 @@ const teacherAttributesSchema = new Schema<ITeacherAttributes>(
     },
     status: {
       type: String,
-      enum: ["pending", "approved", "rejected"]
+      enum: ["pending", "approved", "rejected"], default: "pending",
     },
     teachingExperience: {
       type: String,
@@ -64,6 +65,10 @@ const teacherAttributesSchema = new Schema<ITeacherAttributes>(
     signingDurationDescription: {
       type: String,
       default: null,
+    },
+    fullName: {
+      type: String,
+      required: true,
     },
   },
   {
