@@ -24,6 +24,7 @@ export interface ITask extends Document {
   videoUrl: string;
   xpValue: number;
   duration: number;
+  referenceId: string;
 }
 
 export interface ILesson extends Document {
@@ -71,6 +72,7 @@ const taskSchema = new Schema<ITask>({
   videoUrl: { type: String, required: true },
   xpValue: { type: Number, required: true },
   duration: { type: Number, required: true },
+  referenceId: { type: String, required: true },
 });
 
 const lessonSchema = new Schema<ILesson>({
